@@ -417,3 +417,61 @@ button:disabled { cursor: not-allowed; opacity: .65; }
 .integrated-lot-shape.street-highlight:hover polygon, .integrated-lot-shape.street-highlight:focus polygon { fill: #67b1e5; }
 .integrated-lot-shape.selected polygon { fill: #596a72; stroke: #213e48; stroke-width: .48; }
 @media (max-width: 760px) { .integrated-tabs { margin-left: -2px; margin-right: -2px; } .integrated-tabs button { padding: 0 10px; } .integrated-metrics strong { font-size: 23px; } }
+
+/* V4: secretarias com ilustrações vetoriais animadas */
+.secretariat-grid { align-items: stretch; }
+.secretariat-card { min-height: 292px; padding: 15px 16px 18px; border-radius: 18px; background: #fff; }
+.secretariat-card:hover { transform: translateY(-4px); border-color: color-mix(in srgb, var(--card-accent) 38%, #dfeaf1); box-shadow: 0 18px 36px color-mix(in srgb, var(--card-accent) 16%, transparent); }
+.secretariat-visual { position: relative; z-index: 1; display: grid; width: 100%; height: 116px; overflow: hidden; place-items: center; border: 1px solid color-mix(in srgb, var(--card-accent) 18%, white); border-radius: 14px; color: var(--card-accent); background: linear-gradient(135deg, color-mix(in srgb, var(--card-tint) 84%, white), #fff); }
+.secretariat-visual::after { content: ''; position: absolute; width: 130px; height: 130px; right: -55px; bottom: -80px; border-radius: 50%; background: color-mix(in srgb, var(--card-accent) 12%, transparent); }
+.secretariat-visual svg { position: relative; z-index: 1; width: 100%; height: 100%; overflow: visible; }
+.illustration-halo { fill: #fff; opacity: .58; }
+.illustration-orbit { fill: none; stroke: currentColor; stroke-width: 1.2; stroke-dasharray: 2 7; opacity: .25; transform-origin: 90px 58px; animation: illustration-orbit 18s linear infinite; }
+.illustration-float { transform-origin: 90px 58px; animation: illustration-float 4.8s ease-in-out infinite; }
+.illustration-line { stroke: currentColor; opacity: .88; }
+.illustration-detail { stroke: currentColor; opacity: .48; }
+.illustration-fill { fill: currentColor; opacity: .16; }
+.illustration-fill-soft { fill: currentColor; opacity: .09; }
+.illustration-detail-fill { fill: currentColor; opacity: .6; }
+.illustration-sun, .illustration-ball, .illustration-node { fill: currentColor; opacity: .22; }
+.illustration-ground { fill: currentColor; opacity: .13; }
+.illustration-heart { fill: currentColor; opacity: .24; stroke: currentColor; stroke-width: 2; }
+.illustration-star { fill: currentColor; opacity: .5; animation: illustration-pulse 3s ease-in-out infinite; transform-origin: 134px 35px; }
+.illustration-book { fill: currentColor; opacity: .18; stroke: currentColor; stroke-width: 2; }
+.illustration-book-soft { fill: currentColor; opacity: .1; stroke: currentColor; stroke-width: 2; }
+.illustration-pencil { fill: currentColor; opacity: .35; stroke: currentColor; stroke-width: 1.5; }
+.illustration-cross { fill: currentColor; opacity: .2; stroke: currentColor; stroke-width: 2; }
+.illustration-pulse { fill: currentColor; opacity: .45; animation: illustration-pulse 2.6s ease-in-out infinite; transform-origin: center; }
+.illustration-shield { fill: currentColor; opacity: .12; stroke: currentColor; stroke-width: 2.5; }
+.illustration-map-a, .illustration-territory-a { fill: currentColor; opacity: .13; stroke: currentColor; stroke-width: 2; }
+.illustration-territory-b { fill: currentColor; opacity: .07; stroke: currentColor; stroke-width: 2; }
+.illustration-pin { fill: currentColor; opacity: .2; stroke: currentColor; stroke-width: 2; }
+.illustration-pin-dot { fill: currentColor; opacity: .8; }
+.illustration-spark { fill: currentColor; opacity: .32; }
+.spark-one { animation: illustration-spark 3.6s ease-in-out infinite; }
+.spark-two { animation: illustration-spark 3.6s ease-in-out 1.2s infinite; }
+.secretariat-card-copy { margin: 16px 0 auto; text-align: center; }
+.secretariat-card h2, .secretariat-card p { margin-left: auto; margin-right: auto; }
+.secretariat-card h2 { max-width: 270px; color: #173b57; font-size: 16px; }
+.secretariat-card p { max-width: 285px; margin-top: 7px; color: #8095a4; font-size: 10.5px; }
+.card-link { justify-content: center; margin-top: 15px; color: var(--card-accent); font-size: 10px; letter-spacing: .04em; text-transform: uppercase; }
+.secretariat-card--blue { --card-accent: #126e96; --card-tint: #e5f3f9; }
+.secretariat-card--green { --card-accent: #347b62; --card-tint: #e7f4ec; }
+.secretariat-card--rose { --card-accent: #a85c78; --card-tint: #f7ebf0; }
+.secretariat-card--purple { --card-accent: #715d9b; --card-tint: #efebf8; }
+.secretariat-card--orange { --card-accent: #b16e36; --card-tint: #f8eee4; }
+.secretariat-card--indigo { --card-accent: #536ca2; --card-tint: #e9eef9; }
+.secretariat-card--cyan { --card-accent: #2f7f91; --card-tint: #e5f3f5; }
+.secretariat-card--amber { --card-accent: #9b762c; --card-tint: #f7f1df; }
+.secretariat-card--teal { --card-accent: #267e77; --card-tint: #e3f4f0; }
+.secretariat-card--slate { --card-accent: #536d83; --card-tint: #eaf0f4; }
+.secretariat-card--sky { --card-accent: #397a9f; --card-tint: #e5f2f8; }
+.secretariat-card--navy { --card-accent: #345b88; --card-tint: #e8eef8; }
+@keyframes illustration-float { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-3px) rotate(.6deg); } }
+@keyframes illustration-orbit { to { transform: rotate(360deg); } }
+@keyframes illustration-pulse { 0%, 100% { opacity: .34; transform: scale(1); } 50% { opacity: .72; transform: scale(1.12); } }
+@keyframes illustration-spark { 0%, 100% { opacity: .22; transform: scale(.8); } 50% { opacity: .7; transform: scale(1.25); } }
+@media (max-width: 1100px) { .secretariat-card { min-height: 282px; } }
+@media (max-width: 760px) { .secretariat-card { min-height: 270px; padding: 13px 13px 16px; } .secretariat-visual { height: 106px; } .secretariat-card h2 { font-size: 14px; } .secretariat-card p { font-size: 10px; } }
+@media (max-width: 430px) { .secretariat-grid { gap: 13px; } .secretariat-card { min-height: 252px; padding: 12px; } .secretariat-visual { height: 101px; } .secretariat-card-copy { margin-top: 13px; } .secretariat-card h2 { font-size: 15px; } }
+@media (prefers-reduced-motion: reduce) { .illustration-orbit, .illustration-float, .illustration-star, .illustration-pulse, .spark-one, .spark-two { animation: none; } .secretariat-card { transition: none; } }
