@@ -55,3 +55,11 @@ button:disabled { cursor: not-allowed; opacity: .65; }
 @media (max-width: 820px) { .login-panel { padding: clamp(24px, 7vw, 52px) clamp(18px, 6vw, 48px); } .login-wrap { width: min(100%, 470px); padding-top: 0; } .mobile-brand { margin-bottom: clamp(34px, 8vh, 66px); } }
 @media (max-width: 520px) { .login-panel { padding: 25px 18px 30px; } .mobile-brand { margin-bottom: 42px; } .login-heading h2 { font-size: 28px; } .field-control { height: 54px; } .global-dialog { padding: 26px 22px 22px; } .global-dialog-actions { flex-direction: column-reverse; } .dialog-primary, .dialog-secondary { width: 100%; } }
 @media (min-width: 821px) and (max-height: 720px) { .brand-panel { padding-top: 34px; padding-bottom: 34px; } .panel-content { min-height: 88vh; } .login-panel { padding-top: 24px; padding-bottom: 24px; } .security-note { margin-top: 28px; } }
+
+.recovery-screen { display: grid; gap: 22px; }
+.recovery-intro { display: flex; align-items: flex-start; gap: 13px; padding: 14px; border: 1px solid #dcebf3; border-radius: 12px; background: #f2faff; }
+.recovery-icon { display: grid; place-items: center; flex: 0 0 auto; width: 42px; height: 42px; border-radius: 11px; color: #087cb4; background: #dff4fc; }
+.recovery-intro p { margin: 1px 0 0; color: #567084; font-size: 12px; line-height: 1.55; }
+.recovery-steps { display: grid; grid-template-columns: 25px 1fr; align-items: center; column-gap: 10px; row-gap: 8px; padding-top: 4px; }
+.recovery-steps span { display: grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; color: #087cb4; background: #e2f5fc; font-size: 11px; font-weight: 800; }
+.recovery-steps p { margin: 0; color: #8498a7; font-size: 11px; line-height: 1.4; }
