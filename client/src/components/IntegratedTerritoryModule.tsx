@@ -100,20 +100,18 @@ export function IntegratedTerritoryModule({ user, onBack, onLogout }: { user: Us
 
   const loadData = async (preferredImportId?: string) => {
     setLoading(true);
-    const [importsResult, territoryImportsResult, zonesResult] = await Promise.all([
+    const [importsResult, zonesResult] = await Promise.all([
       supabase.from("census_map_imports").select("id,file_name,status,total_features,valid_features,problematic_features,created_at,is_current,published_at").order("created_at", { ascending: false }).limit(50),
-      supabase.from("census_territory_map_imports").select("id,file_name,status,updated_at,published_at,is_current").order("published_at", { ascending: false }).limit(50),
       supabase.from("census_zones").select("id,name,color,microarea_id").eq("active", true).limit(200),
     ]);
-    if (importsResult.error || territoryImportsResult.error || zonesResult.error) { await alert(importsResult.error?.message || territoryImportsResult.error?.message || zonesResult.error?.message || "Não foi possível ler o mapa do Supabase.", { title: "Erro ao carregar território", kind: "error" }); setLoading(false); return; }
+    if (importsResult.error || zonesResult.error) { await alert(importsResult.error?.message || zonesResult.error?.message || "Não foi possível ler o mapa do Supabase.", { title: "Erro ao carregar território", kind: "error" }); setLoading(false); return; }
     const importRows = importsResult.data || [];
-    const territoryRows = territoryImportsResult.data || [];
-    const current = territoryRows.find((item) => item.id === preferredImportId) || territoryRows.find((item) => item.is_current) || territoryRows.find((item) => item.status === "PUBLISHED");
+    const current = importRows.find((item) => item.id === preferredImportId) || importRows.find((item) => item.is_current) || importRows.find((item) => item.status === "PUBLISHED");
     let lotRows: Array<Record<string, unknown>> = [];
     let householdRows: Array<Record<string, unknown>> = [];
     if (current) {
       const [lotsResult, householdsResult] = await Promise.all([
-        supabase.from("census_territory_map_lots").select("id,source_handle,label,geometry,is_valid,cadastral_label,street_name,neighborhood_name,block_reference,zone_id").eq("import_id", current.id).limit(5000),
+        supabase.from("census_map_lots").select("id,source_handle,label,geometry,is_valid,cadastral_label,street_name,neighborhood_name,block_reference,zone_id").eq("import_id", current.id).limit(5000),
         supabase.from("census_households").select("lot_id,label,address_line,address_number,address_complement,neighborhood,locality,postal_code,property_type,occupancy_status").eq("active", true).limit(5000),
       ]);
       if (lotsResult.error || householdsResult.error) { await alert(lotsResult.error?.message || householdsResult.error?.message || "Não foi possível carregar os lotes e domicílios.", { title: "Erro ao carregar mapa", kind: "error" }); }
@@ -124,7 +122,7 @@ export function IntegratedTerritoryModule({ user, onBack, onLogout }: { user: Us
     const householdByLot = new globalThis.Map(householdRows.map((row) => [String(row.lot_id), { label: String(row.label || "Domicílio"), addressLine: String(row.address_line || ""), addressNumber: String(row.address_number || ""), addressComplement: String(row.address_complement || ""), neighborhood: String(row.neighborhood || ""), locality: String(row.locality || ""), postalCode: String(row.postal_code || ""), propertyType: String(row.property_type || ""), occupancyStatus: String(row.occupancy_status || "") }]));
     setLots(lotRows.map((row) => { const geometry = geometryPoints(row.geometry); const stats = geometryStats(geometry, bounds); const household = householdByLot.get(String(row.id)); const displayGeometry = geometry.map((point) => ({ x: 7 + ((point.x - (bounds?.minX || point.x - 1)) / Math.max((bounds?.maxX || point.x + 1) - (bounds?.minX || point.x - 1), 1)) * 86, y: 9 + (1 - ((point.y - (bounds?.minY || point.y - 1)) / Math.max((bounds?.maxY || point.y + 1) - (bounds?.minY || point.y - 1), 1))) * 78 })); return { id: String(row.id), sourceHandle: String(row.source_handle || ""), label: String(row.cadastral_label || row.label || "Lote sem identificação"), block: String(row.block_reference || "Não identificado"), number: household?.addressNumber || String(row.label || "—"), street: household?.addressLine || String(row.street_name || "Não identificado"), neighborhood: household?.neighborhood || String(row.neighborhood_name || "Não identificado"), status: row.is_valid ? "Conferido" : "Pendente", geometry, displayGeometry, x: stats.x, y: stats.y, household }; }));
     setZones((zonesResult.data || []).map((row) => ({ id: row.id, name: row.name, color: row.color, microareaId: row.microarea_id })));
-    setImports([...territoryRows.map((row) => ({ id: row.id, file: row.file_name, lots: 0, features: 0, problematic: 0, date: new Date(row.updated_at).toLocaleString("pt-BR"), status: row.status, current: row.is_current })), ...importRows.map((row) => ({ id: row.id, file: row.file_name, lots: row.valid_features, features: row.total_features, problematic: row.problematic_features, date: new Date(row.created_at).toLocaleString("pt-BR"), status: row.status, current: row.is_current }))]); setFileName(current?.file_name || ""); setLoading(false);
+    setImports(importRows.map((row) => ({ id: row.id, file: row.file_name, lots: row.valid_features, features: row.total_features, problematic: row.problematic_features, date: new Date(row.created_at).toLocaleString("pt-BR"), status: row.status, current: row.is_current }))); setFileName(current?.file_name || ""); setLoading(false);
   };
 
   useEffect(() => { void loadData(); }, []);
