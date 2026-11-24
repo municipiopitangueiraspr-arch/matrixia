@@ -1,6 +1,6 @@
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import type { LucideIcon } from "lucide-react";
-import { ArrowRight, ArrowUpRight, Building2, Check, ChevronDown, Construction, Dumbbell, Eye, EyeOff, GraduationCap, HeartHandshake, Landmark, Leaf, LockKeyhole, LogOut, Mail, Palette, Shield, ShieldCheck, Sparkles, Stethoscope, UserRound, Wheat, BriefcaseBusiness } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Building2, BriefcaseBusiness, ChevronDown, Construction, Eye, EyeOff, GraduationCap, HandHeart, HeartPulse, Landmark, LockKeyhole, LogOut, Mail, Map, Palette, School, Shield, ShieldCheck, Sparkles, Sprout, Store, TrafficCone, Trophy } from "lucide-react";
 import type { User } from "@supabase/supabase-js";
 import { supabase } from "@/lib/supabase";
 import { useDialog } from "@/contexts/DialogContext";
@@ -10,16 +10,16 @@ type Secretariat = { name: string; description: string; icon: LucideIcon; tone: 
 
 const secretariats: Secretariat[] = [
   { name: "Administração e Finanças", description: "Gestão administrativa, orçamentária e financeira", icon: Landmark, tone: "blue" },
-  { name: "Agricultura e Meio Ambiente", description: "Desenvolvimento rural, sustentabilidade e território", icon: Wheat, tone: "green" },
-  { name: "Assistência Social", description: "Proteção social, famílias e cidadania", icon: HeartHandshake, tone: "rose" },
+  { name: "Agricultura e Meio Ambiente", description: "Desenvolvimento rural, sustentabilidade e território", icon: Sprout, tone: "green" },
+  { name: "Assistência Social", description: "Proteção social, famílias e cidadania", icon: HandHeart, tone: "rose" },
   { name: "Cultura e Turismo", description: "Patrimônio, eventos, cultura e experiências", icon: Palette, tone: "purple" },
-  { name: "Desenvolvimento Econômico", description: "Emprego, inovação e fortalecimento local", icon: BriefcaseBusiness, tone: "orange" },
-  { name: "Educação", description: "Rede municipal, aprendizagem e comunidade escolar", icon: GraduationCap, tone: "indigo" },
-  { name: "Esporte e Lazer", description: "Atividade física, recreação e qualidade de vida", icon: Dumbbell, tone: "cyan" },
+  { name: "Desenvolvimento Econômico", description: "Emprego, inovação e fortalecimento local", icon: Store, tone: "orange" },
+  { name: "Educação", description: "Rede municipal, aprendizagem e comunidade escolar", icon: School, tone: "indigo" },
+  { name: "Esporte e Lazer", description: "Atividade física, recreação e qualidade de vida", icon: Trophy, tone: "cyan" },
   { name: "Obras e Serviços Públicos", description: "Infraestrutura, manutenção e serviços urbanos", icon: Construction, tone: "amber" },
-  { name: "Saúde e Vigilância Sanitária", description: "Atenção à saúde, cuidado e vigilância", icon: Stethoscope, tone: "teal" },
-  { name: "Segurança Pública e Trânsito", description: "Prevenção, mobilidade e segurança viária", icon: Shield, tone: "slate" },
-  { name: "Planejamento e Urbanismo", description: "Planejamento municipal, obras e cidade", icon: Building2, tone: "sky" },
+  { name: "Saúde e Vigilância Sanitária", description: "Atenção à saúde, cuidado e vigilância", icon: HeartPulse, tone: "teal" },
+  { name: "Segurança Pública e Trânsito", description: "Prevenção, mobilidade e segurança viária", icon: TrafficCone, tone: "slate" },
+  { name: "Planejamento e Urbanismo", description: "Planejamento municipal, obras e cidade", icon: Map, tone: "sky" },
   { name: "Governança", description: "Usuários, acessos, auditoria e integridade", icon: ShieldCheck, tone: "navy" },
 ];
 

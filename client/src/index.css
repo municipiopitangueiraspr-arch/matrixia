@@ -85,3 +85,22 @@ button:disabled { cursor: not-allowed; opacity: .65; }
 @media (max-width: 1100px) { .secretariat-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 @media (max-width: 760px) { .app-header { height: 68px; padding: 0 18px; } .header-brand .brand-wordmark strong, .header-brand .brand-wordmark em { font-size: 18px; } .user-copy { display: none; } .user-avatar { width: 38px; height: 38px; } .dashboard-main { padding: 103px 18px 28px; } .dashboard-intro { align-items: flex-start; flex-direction: column; gap: 16px; margin-bottom: 24px; } .dashboard-status { font-size: 10px; } .secretariat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; } .secretariat-card { min-height: 205px; padding: 17px; } .secretariat-card h2 { font-size: 14px; } .secretariat-card p { font-size: 10px; } .secretariat-icon { width: 45px; height: 45px; } }
 @media (max-width: 430px) { .secretariat-grid { grid-template-columns: 1fr; } .secretariat-card { min-height: 162px; } .secretariat-card-copy { margin-top: 17px; } .dashboard-footer { align-items: flex-start; flex-direction: column; gap: 13px; } }
+
+/* V2 dos cards: linguagem editorial, sóbria e institucional */
+.secretariat-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+.secretariat-card { min-height: 214px; padding: 24px 25px 21px; border: 1px solid #dce7ee; border-radius: 12px; background: linear-gradient(145deg, #ffffff 0%, #f8fbfd 100%); box-shadow: 0 3px 12px rgba(25, 61, 86, .035); }
+.secretariat-card::after { width: 180px; height: 180px; right: -105px; top: -105px; opacity: .3; }
+.secretariat-card::before { content: ''; position: absolute; left: 0; top: 21px; bottom: 21px; width: 3px; border-radius: 0 3px 3px 0; background: var(--card-accent); opacity: .78; }
+.secretariat-card:hover { transform: translateY(-3px); border-color: #c6dbe6; box-shadow: 0 13px 28px rgba(19, 65, 92, .1); }
+.card-topline { align-items: center; }
+.secretariat-icon { width: 47px; height: 47px; border: 1px solid color-mix(in srgb, var(--card-accent) 18%, white); border-radius: 11px; color: var(--card-accent); background: color-mix(in srgb, var(--card-tint) 58%, white); }
+.card-arrow { color: #afbec8; }
+.secretariat-card-copy { margin: 23px 0 auto; }
+.secretariat-card h2 { max-width: 255px; font-size: 17px; line-height: 1.18; letter-spacing: -.045em; }
+.secretariat-card p { max-width: 255px; margin-top: 9px; color: #8193a0; font-size: 11px; }
+.card-link { margin-top: 17px; color: #637e90; font-size: 10px; letter-spacing: .02em; text-transform: uppercase; }
+.secretariat-card:hover .card-link { color: var(--card-accent); }
+.secretariat-card--blue { --card-accent: #126b91; --card-tint: #e4f1f6; } .secretariat-card--green { --card-accent: #3d785d; --card-tint: #e7f2eb; } .secretariat-card--rose { --card-accent: #a65d72; --card-tint: #f5eaee; } .secretariat-card--purple { --card-accent: #735e93; --card-tint: #eeeaf4; } .secretariat-card--orange { --card-accent: #a86f3d; --card-tint: #f7eee3; } .secretariat-card--indigo { --card-accent: #586e9b; --card-tint: #e9edf6; } .secretariat-card--cyan { --card-accent: #3e7e89; --card-tint: #e5f1f3; } .secretariat-card--amber { --card-accent: #9a762f; --card-tint: #f5f0df; } .secretariat-card--teal { --card-accent: #287b73; --card-tint: #e4f1ef; } .secretariat-card--slate { --card-accent: #526879; --card-tint: #e9eef2; } .secretariat-card--sky { --card-accent: #39738f; --card-tint: #e5eff3; } .secretariat-card--navy { --card-accent: #31567d; --card-tint: #e6edf5; }
+@media (max-width: 1100px) { .secretariat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 760px) { .secretariat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; } .secretariat-card { min-height: 198px; padding: 19px 18px 17px; } .secretariat-card h2 { font-size: 15px; } }
+@media (max-width: 430px) { .secretariat-grid { grid-template-columns: 1fr; } .secretariat-card { min-height: 158px; } }
