@@ -111,3 +111,26 @@ button:disabled { cursor: not-allowed; opacity: .65; }
 .secretariat-card-copy { text-align: center; }
 .secretariat-card h2, .secretariat-card p { margin-left: auto; margin-right: auto; }
 .card-link { justify-content: center; }
+
+/* V3: dashboard institucional clean, com uma linguagem cromática única */
+.dashboard-shell { background: #f7fafc; }
+.dashboard-main { padding-top: 124px; }
+.dashboard-intro { margin-bottom: 38px; }
+.dashboard-intro .eyebrow { color: #16769e; letter-spacing: .16em; }
+.dashboard-intro h1 { color: #17384f; }
+.dashboard-intro p:not(.eyebrow) { color: #8093a1; }
+.secretariat-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+.secretariat-card { min-height: 226px; padding: 25px 26px 23px; border: 1px solid #e2ebf0; border-radius: 14px; background: #fff; box-shadow: 0 2px 8px rgba(20, 62, 86, .025); }
+.secretariat-card::before, .secretariat-card::after { display: none; }
+.secretariat-card:hover { transform: translateY(-2px); border-color: #a9d1e2; box-shadow: 0 10px 24px rgba(25, 91, 121, .08); }
+.card-topline { justify-content: flex-start; }
+.secretariat-icon { width: 52px; height: 52px; border: 1px solid #cfe7f1; border-radius: 12px; color: #126e96; background: #eef8fc; }
+.secretariat-card-copy { margin: 25px 0 auto; text-align: left; }
+.secretariat-card h2 { max-width: 270px; color: #1c4058; font-size: 17px; font-weight: 800; letter-spacing: -.04em; }
+.secretariat-card p { max-width: 275px; margin-left: 0; margin-right: 0; color: #8295a2; font-size: 11px; }
+.card-link { justify-content: flex-start; margin-top: 19px; color: #19789f; font-size: 11px; font-weight: 700; letter-spacing: 0; text-transform: none; }
+.secretariat-card:hover .card-link { color: #0d5e83; }
+.secretariat-card--blue, .secretariat-card--green, .secretariat-card--rose, .secretariat-card--purple, .secretariat-card--orange, .secretariat-card--indigo, .secretariat-card--cyan, .secretariat-card--amber, .secretariat-card--teal, .secretariat-card--slate, .secretariat-card--sky, .secretariat-card--navy { --card-accent: #126e96; --card-tint: #eef8fc; }
+@media (max-width: 1100px) { .secretariat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 760px) { .secretariat-grid { gap: 14px; } .secretariat-card { min-height: 204px; padding: 21px 19px 18px; } .secretariat-card h2 { font-size: 15px; } }
+@media (max-width: 430px) { .secretariat-card { min-height: 172px; } .secretariat-card-copy { margin-top: 18px; } }

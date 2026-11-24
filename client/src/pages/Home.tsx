@@ -1,6 +1,6 @@
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import type { LucideIcon } from "lucide-react";
-import { ArrowRight, Building2, BriefcaseBusiness, ChevronDown, Construction, Eye, EyeOff, GraduationCap, HandHeart, HeartPulse, Landmark, LockKeyhole, LogOut, Mail, Map, Palette, School, Shield, ShieldCheck, Sparkles, Sprout, Store, TrafficCone, Trophy } from "lucide-react";
+import { ArrowRight, ChevronDown, Construction, Eye, EyeOff, GraduationCap, HandHeart, HeartPulse, Landmark, LockKeyhole, LogOut, Mail, Map, Palette, School, ShieldCheck, Sparkles, Sprout, Store, TrafficCone, Trophy } from "lucide-react";
 import type { User } from "@supabase/supabase-js";
 import { supabase } from "@/lib/supabase";
 import { useDialog } from "@/contexts/DialogContext";
