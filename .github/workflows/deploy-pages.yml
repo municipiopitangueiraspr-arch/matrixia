@@ -37,11 +37,6 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: dist/public
-      - name: Upload Pages artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: github-pages
-          path: dist/public
   deploy:
     environment:
       name: github-pages
