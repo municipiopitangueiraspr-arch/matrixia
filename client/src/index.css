@@ -216,6 +216,7 @@ button:disabled { cursor: not-allowed; opacity: .65; }
 .territory-map-side button.active, .territory-map-side button:hover { color: #176e93; background: #edf7fa; }
 .territory-map-side label, .territory-list-actions label { display: flex; align-items: center; gap: 7px; border: 1px solid #d7e4eb; border-radius: 7px; padding: 8px 9px; color: #8aa0ab; background: #fbfdfe; }
 .territory-map-side input, .territory-list-actions input { min-width: 0; width: 100%; border: 0; outline: 0; color: #31566a; background: transparent; font-size: 10px; }
+.territory-map-layer-note { padding: 5px 8px 0; color: #8ca0aa; font-size: 9px; line-height: 1.35; }
 .territory-list-panel { margin-top: 16px; overflow: hidden; }
 .territory-list-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 17px; border-bottom: 1px solid #e1ebf0; }
 .territory-list-toolbar h2 { margin: 0; color: #28546b; font-size: 17px; }
@@ -238,6 +239,8 @@ button:disabled { cursor: not-allowed; opacity: .65; }
 .territory-form > div:first-of-type { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 10px; }
 .territory-form label { display: grid; gap: 6px; color: #547384; font-size: 10px; font-weight: 700; }
 .territory-form input, .territory-form select { height: 36px; border: 1px solid #d6e4eb; border-radius: 7px; padding: 0 9px; outline: 0; color: #31566a; background: #fff; font-size: 11px; }
+.territory-form textarea { min-height: 70px; resize: vertical; border: 1px solid #d6e4eb; border-radius: 7px; padding: 9px; outline: 0; color: #31566a; background: #fff; font-size: 11px; }
+.territory-form input:focus, .territory-form select:focus, .territory-form textarea:focus, .territory-list-actions label:focus-within { border-color: #86bdd2; box-shadow: 0 0 0 3px rgba(48, 143, 177, .1); }
 .territory-form > div:last-child { display: flex; justify-content: flex-end; gap: 8px; }
 .territory-cancel { border: 1px solid #d4e2e9; border-radius: 7px; padding: 9px 12px; color: #678493; background: #fff; font-size: 10px; font-weight: 700; }
 .territory-footer { display: flex; gap: 16px; margin-top: 20px; padding-top: 13px; border-top: 1px solid #dbe6ec; color: #8297a3; font-size: 10px; }
