@@ -1,6 +1,6 @@
 # MatrixIA
 
-Tela de acesso da plataforma MatrixIA, construída em React + TypeScript e publicada como SPA estática no GitHub Pages. A autenticação e a recuperação de senha usam o Supabase Auth do projeto MatrixIA (`ccxtruvqrmnhfmefubnd`).
+Tela de acesso da plataforma MatrixIA, construída em React + TypeScript e publicada como SPA estática no GitHub Pages. A autenticação e a recuperação de senha usam o Supabase Auth do projeto Inteligência Municipal (`qgkjnzcqjhhqdgxmvtew`).
 
 ## O que foi entregue
 
@@ -16,7 +16,7 @@ Tela de acesso da plataforma MatrixIA, construída em React + TypeScript e publi
 
 Em **Settings → Secrets and variables → Actions → Variables**, crie:
 
-- `VITE_SUPABASE_URL` = `https://ccxtruvqrmnhfmefubnd.supabase.co`
+- `VITE_SUPABASE_URL` = `https://qgkjnzcqjhhqdgxmvtew.supabase.co`
 - `VITE_SUPABASE_PUBLISHABLE_KEY` = chave publicável do projeto MatrixIA
 
 Em **Settings → Pages**, selecione **GitHub Actions** como fonte de publicação. O workflow publica a aplicação em:
