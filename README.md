@@ -46,3 +46,8 @@ pnpm dev:static
 ```
 
 A checagem TypeScript é feita com `pnpm check` e o build de produção com `pnpm build:static`.
+
+
+## Mensagens e confirmações
+
+O projeto possui um `DialogProvider` global. Use `useDialog()` em qualquer tela ou módulo para exibir `alert(...)` confirmável ou `confirm(...)` com Cancelar/Confirmar. Erros, alertas, sucessos e informações não devem ser exibidos por `window.alert`, banners inline ou mensagens silenciosas.
