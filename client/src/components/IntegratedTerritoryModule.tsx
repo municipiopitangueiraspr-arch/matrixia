@@ -28,7 +28,10 @@ function csvDownload(rows: string[][], filename: string) {
 
 function geometryPoints(value: unknown): Point[] {
   if (!Array.isArray(value)) return [];
-  return value.map((point) => ({ x: Number((point as { x?: number }).x), y: Number((point as { y?: number }).y) })).filter((point) => Number.isFinite(point.x) && Number.isFinite(point.y));
+  return value.map((point) => {
+    if (Array.isArray(point)) return { x: Number(point[0]), y: Number(point[1]) };
+    return { x: Number((point as { x?: number }).x), y: Number((point as { y?: number }).y) };
+  }).filter((point) => Number.isFinite(point.x) && Number.isFinite(point.y));
 }
 
 function geometryStats(points: Point[], bounds?: { minX: number; maxX: number; minY: number; maxY: number }) {
