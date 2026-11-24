@@ -475,3 +475,25 @@ button:disabled { cursor: not-allowed; opacity: .65; }
 @media (max-width: 760px) { .secretariat-card { min-height: 270px; padding: 13px 13px 16px; } .secretariat-visual { height: 106px; } .secretariat-card h2 { font-size: 14px; } .secretariat-card p { font-size: 10px; } }
 @media (max-width: 430px) { .secretariat-grid { gap: 13px; } .secretariat-card { min-height: 252px; padding: 12px; } .secretariat-visual { height: 101px; } .secretariat-card-copy { margin-top: 13px; } .secretariat-card h2 { font-size: 15px; } }
 @media (prefers-reduced-motion: reduce) { .illustration-orbit, .illustration-float, .illustration-star, .illustration-pulse, .spark-one, .spark-two { animation: none; } .secretariat-card { transition: none; } }
+
+/* V5: cards ilustrados em faixa, inspirados no catálogo visual de referência */
+.secretariat-card { min-height: 286px; padding: 12px 12px 16px; border-radius: 14px; background: #fff; border-color: #dfe8eb; box-shadow: 0 5px 16px rgba(37, 74, 91, .06); }
+.secretariat-card:hover { transform: translateY(-4px); border-color: color-mix(in srgb, var(--card-accent) 35%, #dfe8eb); box-shadow: 0 16px 28px rgba(37, 74, 91, .13); }
+.secretariat-visual { height: 126px; border: 0; border-radius: 10px 10px 6px 6px; background: var(--scene-sky); box-shadow: inset 0 -1px 0 rgba(25, 71, 82, .12); }
+.secretariat-visual::after { display: none; }
+.secretariat-visual svg { width: 100%; height: 100%; }
+.scene-float { transform-origin: 180px 80px; animation: scene-float 5.5s ease-in-out infinite; }
+.scene-sun { animation: scene-sun 4s ease-in-out infinite; transform-origin: 303px 29px; }
+.scene-sparkles { animation: scene-sparkles 3.8s ease-in-out infinite; }
+.secretariat-card-copy { margin: 14px 4px 0; text-align: center; }
+.secretariat-card h2 { max-width: 100%; color: #243a47; font-family: Manrope, sans-serif; font-size: 15px; font-weight: 800; letter-spacing: -.035em; }
+.secretariat-card p { max-width: 100%; margin-top: 5px; color: #6d7f89; font-size: 10px; line-height: 1.35; }
+.card-link { justify-content: center; margin-top: 13px; color: #197b9d; font-size: 9px; font-weight: 800; letter-spacing: .01em; }
+.card-link svg { width: 13px; }
+@keyframes scene-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-2px); } }
+@keyframes scene-sun { 0%, 100% { opacity: .86; } 50% { opacity: 1; } }
+@keyframes scene-sparkles { 0%, 100% { opacity: .4; transform: translateY(0); } 50% { opacity: .9; transform: translateY(-2px); } }
+@media (max-width: 1100px) { .secretariat-card { min-height: 282px; } }
+@media (max-width: 760px) { .secretariat-card { min-height: 268px; padding: 10px 10px 14px; } .secretariat-visual { height: 116px; } .secretariat-card h2 { font-size: 14px; } .secretariat-card p { font-size: 9.5px; } }
+@media (max-width: 430px) { .secretariat-grid { gap: 13px; } .secretariat-card { min-height: 246px; } .secretariat-visual { height: 108px; } .secretariat-card-copy { margin-top: 11px; } .secretariat-card h2 { font-size: 15px; } }
+@media (prefers-reduced-motion: reduce) { .scene-float, .scene-sun, .scene-sparkles { animation: none; } }
