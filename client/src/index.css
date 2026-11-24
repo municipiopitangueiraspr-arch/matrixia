@@ -325,3 +325,25 @@ button:disabled { cursor: not-allowed; opacity: .65; }
 @media (max-width: 1000px) { .integrated-layout { grid-template-columns: 1fr; } .integrated-sidebar { display: flex; gap: 8px; overflow-x: auto; padding: 8px; } .integrated-sidebar-label, .integrated-nav-group > span { display: none; } .integrated-nav-group { display: flex; gap: 4px; padding: 0; border: 0; } .integrated-nav-group button { width: auto; white-space: nowrap; } .integrated-area-form { grid-template-columns: repeat(3, 1fr); } .integrated-form-actions { grid-column: 1 / -1; justify-content: flex-end; } }
 @media (max-width: 700px) { .integrated-main { padding: 94px 13px 20px; } .integrated-heading { align-items: flex-start; flex-direction: column; } .integrated-mode { display: none; } .integrated-metrics { grid-template-columns: repeat(2, 1fr); } .integrated-content-head { align-items: flex-start; flex-direction: column; } .integrated-map { min-height: 390px; } .integrated-area-form { grid-template-columns: 1fr 1fr; } .integrated-area-form > div:first-child { grid-column: 1 / -1; } .integrated-form-actions { grid-column: 1 / -1; } .integrated-footer { align-items: flex-start; flex-direction: column; } .integrated-footer button { margin-left: 0; } }
 @media (max-width: 460px) { .integrated-metrics > div { grid-template-columns: 35px 1fr; padding: 9px; } .integrated-metrics strong { font-size: 19px; } .integrated-map-toolbar label { width: 100%; order: 3; } .integrated-map-toolbar > span { width: 100%; } .integrated-lot { width: 49px; height: 58px; } .integrated-map-legend { left: 8px; right: 8px; justify-content: space-between; } }
+
+/* Refinamento do mapa cadastral: geometria neutra e dossiê compartilhado */
+.integrated-map { transform-origin: center center; transition: transform .2s ease; }
+.integrated-map-toolbar > button { min-width: 28px; height: 27px; border: 1px solid #d5e3e8; border-radius: 6px; color: #567788; background: #fff; font-size: 12px; }
+.integrated-map-toolbar > strong { min-width: 40px; color: #466d7e; font-size: 10px; text-align: center; }
+.integrated-lot { border-color: #9da9ad; color: #536166; background: rgba(203, 209, 211, .9); }
+.integrated-lot:hover { border-color: #3c7c91; background: #e5ecee; }
+.integrated-lot.pending { border-color: #8f999c; border-style: dashed; background: rgba(211, 216, 217, .88); }
+.integrated-lot.selected, .integrated-lot.selected.pending { border-color: #247b96; color: #fff; background: #368da5; box-shadow: 0 0 0 4px rgba(54, 141, 165, .2); }
+.integrated-map-legend .lot-ok { background: #9da9ad; }
+.integrated-map-legend .lot-pending { background: #8f999c; }
+.integrated-dossier { display: grid; gap: 15px; margin: 12px 15px 15px; padding: 16px; border: 1px solid #cfe1e8; border-radius: 11px; background: linear-gradient(135deg, #f8fcfd, #eef7f9); }
+.integrated-dossier-kicker { color: #25758e; font-size: 9px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+.integrated-dossier h3 { margin: 5px 0 0; color: #2e5e72; font-size: 15px; }
+.integrated-dossier p { margin: 4px 0 0; color: #8298a3; font-size: 10px; }
+.integrated-dossier-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.integrated-dossier-grid span { display: grid; gap: 4px; min-height: 39px; padding: 8px; border: 1px solid #dce9ed; border-radius: 7px; color: #547383; background: rgba(255,255,255,.72); font-size: 10px; }
+.integrated-dossier-grid b { color: #91a2aa; font-size: 8px; letter-spacing: .05em; text-transform: uppercase; }
+.integrated-dossier-actions { display: flex; gap: 8px; }
+.integrated-dossier-actions button { display: inline-flex; align-items: center; gap: 6px; border: 1px solid #c9e0e7; border-radius: 7px; padding: 8px 10px; color: #276f87; background: #fff; font-size: 10px; font-weight: 800; }
+.integrated-dossier-actions button:hover { border-color: #76b4c5; background: #f3fbfd; }
+@media (max-width: 600px) { .integrated-dossier-grid { grid-template-columns: repeat(2, 1fr); } .integrated-dossier-actions { flex-direction: column; } }
