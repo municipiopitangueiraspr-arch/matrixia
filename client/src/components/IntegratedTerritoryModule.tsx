@@ -110,12 +110,17 @@ export function IntegratedTerritoryModule({ user, onBack, onLogout }: { user: Us
     let lotRows: Array<Record<string, unknown>> = [];
     let householdRows: Array<Record<string, unknown>> = [];
     if (current) {
-      const [lotsResult, householdsResult] = await Promise.all([
-        supabase.from("census_map_lots").select("id,source_handle,label,geometry,is_valid,cadastral_label,street_name,neighborhood_name,block_reference,zone_id").eq("import_id", current.id).limit(5000),
+      const [householdsResult] = await Promise.all([
         supabase.from("census_households").select("lot_id,label,address_line,address_number,address_complement,neighborhood,locality,postal_code,property_type,occupancy_status").eq("active", true).limit(5000),
       ]);
-      if (lotsResult.error || householdsResult.error) { await alert(lotsResult.error?.message || householdsResult.error?.message || "Não foi possível carregar os lotes e domicílios.", { title: "Erro ao carregar mapa", kind: "error" }); }
-      lotRows = lotsResult.data || []; householdRows = householdsResult.data || [];
+      for (let offset = 0; ; offset += 1000) {
+        const lotsResult = await supabase.from("census_map_lots").select("id,source_handle,label,geometry,is_valid,cadastral_label,street_name,neighborhood_name,block_reference,zone_id").eq("import_id", current.id).range(offset, offset + 999);
+        if (lotsResult.error) { await alert(lotsResult.error.message, { title: "Erro ao carregar mapa", kind: "error" }); break; }
+        lotRows.push(...(lotsResult.data || []));
+        if ((lotsResult.data || []).length < 1000) break;
+      }
+      if (householdsResult.error) { await alert(householdsResult.error.message, { title: "Erro ao carregar domicílios", kind: "error" }); }
+      householdRows = householdsResult.data || [];
     }
     const allGeometry = lotRows.flatMap((row) => geometryPoints(row.geometry));
     const bounds = allGeometry.length ? { minX: Math.min(...allGeometry.map((point) => point.x)), maxX: Math.max(...allGeometry.map((point) => point.x)), minY: Math.min(...allGeometry.map((point) => point.y)), maxY: Math.max(...allGeometry.map((point) => point.y)) } : undefined;
