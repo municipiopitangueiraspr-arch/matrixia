@@ -571,3 +571,34 @@ button:disabled { cursor: not-allowed; opacity: .65; }
 @media (max-width: 1050px) { .health-obligations-toolbar { align-items: flex-start; flex-direction: column; } .health-obligations-filters { justify-content: flex-start; } }
 @media (max-width: 800px) { .health-obligations-main { padding: 96px 16px 22px; } .health-obligations-heading { align-items: flex-start; flex-direction: column; gap: 12px; } .health-obligation-metrics { grid-template-columns: repeat(2, 1fr); } .health-obligation-list { grid-template-columns: 1fr; } }
 @media (max-width: 520px) { .health-obligations-filters { display: grid; grid-template-columns: 1fr 1fr; width: 100%; } .health-obligations-filters label, .health-obligations-search { width: 100%; } .health-obligations-search { grid-column: 1 / -1; } .health-obligations-search input { width: 100%; } .health-obligations-filters select { max-width: none; width: 100%; } .health-obligations-metrics > div { padding: 10px; } .health-obligations-metrics strong { font-size: 20px; } .health-obligation-card-top { flex-direction: column; } }
+
+/* Rodada UX: hierarquia de atendimento e contexto sob demanda */
+.health-obligations-guide { margin-bottom: 16px; border: 1px solid #cfe2eb; border-radius: 13px; background: linear-gradient(115deg, #f6fbfd, #eef7f8); box-shadow: 0 5px 15px rgba(31, 78, 101, .035); }
+.health-obligations-guide-head { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 13px 15px; }
+.health-obligations-guide-title { display: flex; align-items: center; gap: 10px; }
+.health-obligations-guide-title > span { display: grid; place-items: center; width: 31px; height: 31px; border-radius: 9px; color: #217998; background: #dff1f6; }
+.health-obligations-guide-title div { display: grid; gap: 3px; } .health-obligations-guide-title strong { color: #285a70; font-size: 12px; } .health-obligations-guide-title small { color: #76909c; font-size: 10px; line-height: 1.35; }
+.health-obligations-guide-head > button { display: inline-flex; align-items: center; gap: 5px; border: 0; color: #327995; background: transparent; font-size: 10px; font-weight: 800; white-space: nowrap; } .health-obligations-guide-head > button svg { transition: transform .18s; } .health-obligations-guide-head > button svg.is-open { transform: rotate(180deg); }
+.health-obligations-guide-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 0 15px 14px; }
+.health-obligations-guide-steps > div { display: grid; grid-template-columns: 23px 1fr; gap: 7px; padding: 10px; border: 1px solid #dcebf0; border-radius: 8px; background: rgba(255,255,255,.68); }
+.health-obligations-guide-steps b { display: grid; place-items: center; width: 21px; height: 21px; border-radius: 50%; color: #fff; background: #3b91a7; font-size: 10px; } .health-obligations-guide-steps span { color: #718b97; font-size: 9px; line-height: 1.45; } .health-obligations-guide-steps strong { display: block; margin-bottom: 3px; color: #3d6878; font-size: 10px; }
+.health-obligation-metrics > div { grid-template-columns: 27px 1fr; } .health-obligation-metrics small { grid-column: 2; color: #a0afb7; font-size: 8px; line-height: 1.25; }
+.health-obligations-notice strong { font-size: 12px; } .health-obligations-notice span { font-size: 10px; }
+.health-obligations-section-kicker { margin-bottom: 4px; color: #3e899f; font-size: 8px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+.health-obligation-card { gap: 9px; transition: border-color .18s, box-shadow .18s, transform .18s; } .health-obligation-card:hover { border-color: #b8d8e2; box-shadow: 0 7px 18px rgba(31, 89, 111, .07); transform: translateY(-1px); }
+.health-obligation-card > p { color: #708994; } .health-obligation-card-top h3 { max-width: 360px; }
+.health-obligation-context { border-top: 1px solid #edf2f5; padding-top: 8px; } .health-obligation-context summary { display: flex; align-items: center; gap: 5px; color: #347c96; font-size: 9px; font-weight: 800; cursor: pointer; list-style: none; } .health-obligation-context summary::-webkit-details-marker { display: none; } .health-obligation-context summary svg:last-child { margin-left: auto; transition: transform .18s; } .health-obligation-context[open] summary svg:last-child { transform: rotate(180deg); }
+.health-obligation-context > div { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; margin-top: 9px; } .health-obligation-context > div > span { display: grid; grid-template-columns: 15px 1fr; column-gap: 5px; padding: 8px; border-radius: 7px; color: #758d98; background: #f7fafb; font-size: 9px; line-height: 1.35; } .health-obligation-context > div > span > svg { grid-row: span 2; margin-top: 1px; color: #5294a5; } .health-obligation-context b { color: #557987; font-size: 8px; }
+@media (max-width: 800px) { .health-obligations-guide-steps { grid-template-columns: 1fr; } .health-obligation-context > div { grid-template-columns: 1fr; } }
+@media (max-width: 520px) { .health-obligations-guide-head { align-items: flex-start; flex-direction: column; } .health-obligations-guide-head > button { padding-left: 41px; } }
+
+/* Estados de atendimento e acessibilidade */
+.health-obligation-status--muted { color: #6f818a; background: #eef2f3; }
+.health-obligations-partial-error { display: flex; align-items: center; gap: 8px; padding: 10px 14px; border-bottom: 1px solid #f0dfbd; color: #956b31; background: #fffaf1; font-size: 10px; }
+.health-obligations-partial-error span { flex: 1; } .health-obligations-partial-error button, .health-obligations-empty button { border: 1px solid #cbdfe7; border-radius: 7px; padding: 6px 9px; color: #27728b; background: #fff; font-size: 9px; font-weight: 800; }
+.health-obligations-empty button { margin-top: 3px; } .health-obligations-empty button:hover, .health-obligations-partial-error button:hover { border-color: #78b3c5; background: #f1fafc; }
+.health-obligations-guide-head > button:focus-visible, .health-obligation-context summary:focus-visible, .health-obligations-filters input:focus-visible, .health-obligations-filters select:focus-visible, .health-obligations-partial-error button:focus-visible, .health-obligations-empty button:focus-visible { outline: 3px solid rgba(36, 139, 169, .22); outline-offset: 2px; }
+.health-obligation-context > div { grid-template-columns: repeat(4, 1fr); }
+@media (max-width: 1000px) { .health-obligation-context > div { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 800px) { .health-obligation-context > div { grid-template-columns: 1fr; } }
+@media (prefers-reduced-motion: reduce) { .health-obligations-guide-head > button svg, .health-obligation-context summary svg:last-child, .health-obligation-card, .health-obligations-spinner { animation: none; transition: none; } }
