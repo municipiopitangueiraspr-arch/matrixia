@@ -390,3 +390,30 @@ button:disabled { cursor: not-allowed; opacity: .65; }
   .integrated-map-toolbar > span { width: 100%; }
   .integrated-map-toolbar label { width: 100%; order: 3; }
 }
+
+/* Rodada de refinamento profissional do Território Integrado */
+.integrated-metrics > div { position: relative; overflow: hidden; min-height: 84px; padding: 14px 16px; border-color: #d7e5eb; box-shadow: 0 7px 18px rgba(31, 78, 101, .045); }
+.integrated-metrics > div::before { content: ''; position: absolute; inset: 0 auto 0 0; width: 4px; background: #3c91ad; }
+.integrated-metrics > div:nth-child(2)::before { background: #6c8f9d; }
+.integrated-metrics > div:nth-child(3)::before { background: #4b9a78; }
+.integrated-metrics > div:nth-child(4)::before { background: #c2954b; }
+.integrated-metrics strong { font-size: 27px; }
+.integrated-tabs { display: flex; gap: 4px; margin: 0 0 14px; padding: 5px; overflow-x: auto; border: 1px solid #d8e5eb; border-radius: 12px; background: #fff; box-shadow: 0 3px 12px rgba(32,79,104,.035); }
+.integrated-tabs button { display: inline-flex; align-items: center; gap: 7px; min-height: 38px; border: 0; border-radius: 8px; padding: 0 12px; color: #718996; background: transparent; font-size: 10px; font-weight: 800; white-space: nowrap; }
+.integrated-tabs button:hover { color: #166c8d; background: #f1f8fa; }
+.integrated-tabs button.active { color: #fff; background: linear-gradient(110deg, #176f91, #2f91a4); box-shadow: 0 4px 10px rgba(32, 112, 139, .18); }
+.integrated-tabs b { min-width: 17px; border-radius: 8px; padding: 2px 5px; color: #a26020; background: #fff2dd; font-size: 9px; text-align: center; }
+.integrated-layout { grid-template-columns: 1fr; }
+.integrated-sidebar { display: none; }
+.integrated-map-toolbar { gap: 7px; }
+.integrated-map-toolbar label { flex: 1 1 250px; width: auto; min-width: 220px; box-shadow: inset 0 1px 2px rgba(34, 74, 91, .025); }
+.integrated-map-toolbar > button { padding: 0 10px; font-size: 10px; }
+.integrated-map-toolbar > button:nth-of-type(1), .integrated-map-toolbar > button:nth-of-type(2) { border-color: #c8e0e7; background: #f4fbfd; }
+.integrated-map { cursor: grab; user-select: none; }
+.integrated-map.is-dragging { cursor: grabbing; }
+.integrated-map-svg { transform-origin: center center; transition: transform .12s ease; }
+.integrated-map.is-dragging .integrated-map-svg { transition: none; }
+.integrated-lot-shape.street-highlight polygon { fill: #458fc4; stroke: #1f5f91; stroke-width: .4; }
+.integrated-lot-shape.street-highlight:hover polygon, .integrated-lot-shape.street-highlight:focus polygon { fill: #67b1e5; }
+.integrated-lot-shape.selected polygon { fill: #596a72; stroke: #213e48; stroke-width: .48; }
+@media (max-width: 760px) { .integrated-tabs { margin-left: -2px; margin-right: -2px; } .integrated-tabs button { padding: 0 10px; } .integrated-metrics strong { font-size: 23px; } }

@@ -255,3 +255,41 @@
 .census-state-pill.active{background:#147a4b!important}
 .census-state-pill:not(.active){background:#475569!important}
 .census-admin-context-banner{display:flex;align-items:flex-start;gap:10px;margin:0 0 14px;padding:12px 14px;border:1px solid #d9c27d;border-left:4px solid #b78320;border-radius:10px;background:#fff9e8;color:#614d1d}.census-admin-context-banner strong{font-size:12px;white-space:nowrap}.census-admin-context-banner span{font-size:11px;line-height:1.45}@media(max-width:620px){.census-admin-context-banner{display:grid;gap:4px}.census-admin-context-banner strong{white-space:normal}}
+
+/* Refinamento profissional solicitado para o Preparar mapa */
+.census-workspace-top { padding: 14px; border: 1px solid #d8e7e7; border-radius: 14px; background: linear-gradient(135deg, #fbfefd, #f1f8f7); box-shadow: 0 6px 18px rgba(31, 78, 80, .05); }
+.census-workspace-upload { width: 100%; align-items: stretch; }
+.census-file-picker { min-height: 68px; border: 1px solid #c6dedd; background: #fff; box-shadow: 0 2px 8px rgba(32, 76, 80, .04); }
+.census-file-picker > svg { color: #287c82; }
+.census-file-picker strong { color: #214f58; font-size: 13px; }
+.census-file-picker small { line-height: 1.4; }
+.census-workspace-upload .fleet-primary-button, .census-workspace-upload .fleet-secondary-button { min-height: 42px; border-radius: 9px; font-size: 11px; font-weight: 800; }
+.census-workspace-upload .fleet-primary-button { box-shadow: 0 5px 12px rgba(27, 110, 95, .15); }
+.census-workspace-upload .fleet-secondary-button { border-color: #c9dfe0; background: #fff; color: #326873; }
+.census-workspace-upload .fleet-secondary-button:hover { border-color: #79aeb1; background: #f2faf9; }
+.census-workspace .census-map-legend { z-index: 6; left: 12px; right: 12px; bottom: 12px; justify-content: flex-start; width: fit-content; max-width: calc(100% - 24px); padding: 8px 10px; border-color: #cbdede; background: rgba(255,255,255,.96); }
+.census-workspace .census-map-legend .unassigned { background: #4b5563; border-color: #374151; }
+.census-workspace .census-map-legend .selected { background: #e2a63d; border-color: #9a6816; }
+.census-workspace .census-map-legend span { font-size: 10px; font-weight: 700; }
+.census-workspace-zones { gap: 12px; padding: 16px; border-color: #d2e2e1; box-shadow: 0 6px 18px rgba(31, 78, 80, .05); }
+.census-prep-map-filter { padding: 13px; border-color: #d0e0e0; background: #f6fbfa; }
+.census-prep-map-filter-heading { padding-bottom: 3px; }
+.census-prep-filter-unassigned { min-height: 44px; border-color: #d2dfdf; box-shadow: 0 2px 5px rgba(32, 76, 80, .025); }
+.census-workspace-zones-heading { align-items: center; padding: 4px 0 13px; }
+.census-workspace-zones-heading h2 { margin-top: 5px; font-family: Manrope, sans-serif; font-size: 19px; letter-spacing: -.035em; }
+.census-workspace-zones-heading > span { border: 1px solid #d3e8e4; background: #eef8f5; color: #2c7565; }
+.census-workspace-zone-list { gap: 8px; max-height: min(38vh, 390px); }
+.census-workspace-zone-list button { min-height: 57px; padding: 11px 12px; border-color: #d8e5e4; background: #fff; box-shadow: 0 2px 6px rgba(35, 82, 84, .025); }
+.census-workspace-zone-list button:hover { transform: translateY(-1px); }
+.census-workspace-zone-list button.active { border-color: #4b9185; background: linear-gradient(105deg, #edf8f5, #f7fcfb); box-shadow: inset 3px 0 #2c806f, 0 4px 10px rgba(42, 115, 99, .08); }
+.census-workspace-zone-list button > i { width: 14px; height: 14px; box-shadow: 0 0 0 3px rgba(40, 110, 99, .08); }
+.census-workspace-zone-list strong { color: #234f55; font-size: 11px; }
+.census-workspace-zone-list small { color: #789195; font-size: 9px; }
+.census-workspace-zone-list svg { color: #27806f; }
+.census-save-card { padding: 15px; border-color: #bbd9d1; box-shadow: 0 7px 18px rgba(38, 91, 93, .08); }
+.census-save-card-summary { padding-bottom: 2px; }
+.census-save-card-summary strong { font-size: 12px; }
+.census-save-button { min-height: 43px; border-radius: 9px; font-size: 12px; }
+.census-workspace-tip { border: 1px solid #dce9e7; background: #f5faf9; font-size: 10px; }
+@media(max-width:900px){.census-workspace-upload{display:grid;grid-template-columns:1fr 1fr}.census-file-picker{grid-column:1/-1}.census-workspace-upload .fleet-primary-button,.census-workspace-upload .fleet-secondary-button{width:100%}}
+@media(max-width:600px){.census-workspace-upload{grid-template-columns:1fr}.census-workspace .census-map-legend{left:8px;right:8px;bottom:8px;max-width:calc(100% - 16px)}.census-workspace .census-map-legend span{font-size:9px}}
