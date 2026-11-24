@@ -131,6 +131,11 @@ button:disabled { cursor: not-allowed; opacity: .65; }
 .card-link { justify-content: flex-start; margin-top: 19px; color: #19789f; font-size: 11px; font-weight: 700; letter-spacing: 0; text-transform: none; }
 .secretariat-card:hover .card-link { color: #0d5e83; }
 .secretariat-card--blue, .secretariat-card--green, .secretariat-card--rose, .secretariat-card--purple, .secretariat-card--orange, .secretariat-card--indigo, .secretariat-card--cyan, .secretariat-card--amber, .secretariat-card--teal, .secretariat-card--slate, .secretariat-card--sky, .secretariat-card--navy { --card-accent: #126e96; --card-tint: #eef8fc; }
+.card-topline { justify-content: center; }
+.secretariat-icon { width: 72px; height: 72px; border-radius: 17px; border-color: #b9ddec; background: #eaf7fc; box-shadow: 0 5px 14px rgba(18, 110, 150, .08); }
+.secretariat-card-copy { margin-top: 27px; text-align: center; }
+.secretariat-card h2, .secretariat-card p { margin-left: auto; margin-right: auto; }
+.card-link { justify-content: center; }
 @media (max-width: 1100px) { .secretariat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 760px) { .secretariat-grid { gap: 14px; } .secretariat-card { min-height: 204px; padding: 21px 19px 18px; } .secretariat-card h2 { font-size: 15px; } }
+@media (max-width: 760px) { .secretariat-grid { gap: 14px; } .secretariat-card { min-height: 218px; padding: 21px 19px 18px; } .secretariat-icon { width: 64px; height: 64px; } .secretariat-card h2 { font-size: 15px; } }
 @media (max-width: 430px) { .secretariat-card { min-height: 172px; } .secretariat-card-copy { margin-top: 18px; } }
