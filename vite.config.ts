@@ -172,6 +172,7 @@ const plugins = [vitePluginPublicPlatformConfig(), react(), tailwindcss(), jsxLo
 
 export default defineConfig({
   plugins,
+  base: process.env.NODE_ENV === "production" ? "/matirixia/" : "/",
   resolve: {
     alias: {
       "@": path.resolve(import.meta.dirname, "client", "src"),
