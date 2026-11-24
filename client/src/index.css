@@ -104,3 +104,10 @@ button:disabled { cursor: not-allowed; opacity: .65; }
 @media (max-width: 1100px) { .secretariat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 760px) { .secretariat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; } .secretariat-card { min-height: 198px; padding: 19px 18px 17px; } .secretariat-card h2 { font-size: 15px; } }
 @media (max-width: 430px) { .secretariat-grid { grid-template-columns: 1fr; } .secretariat-card { min-height: 158px; } }
+
+/* Estrutura solicitada: ícone destacado no topo, seguido de título, descrição e ação */
+.card-topline { justify-content: center; }
+.secretariat-icon { width: 58px; height: 58px; border-radius: 15px; }
+.secretariat-card-copy { text-align: center; }
+.secretariat-card h2, .secretariat-card p { margin-left: auto; margin-right: auto; }
+.card-link { justify-content: center; }
