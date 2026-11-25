@@ -856,3 +856,25 @@ button:disabled { cursor: not-allowed; opacity: .65; }
 .library-reader-alert strong { font-size:12px; }.library-reader-alert small { color:#987968; font-size:11px; }
 .library-reader-alert button { padding:7px 9px; border:1px solid #e6c4b2; border-radius:8px; color:#a35a39; background:#fff; font-size:11px; font-weight:800; }
 @media (max-width:700px) { .library-reader360 { padding:22px 18px; }.library-reader360-head { align-items:flex-start; flex-wrap:wrap; }.library-reader360-head > .library-pill { margin-left:65px; margin-top:-5px; }.library-reader360-metrics { grid-template-columns:repeat(2,1fr); }.library-reader360-grid { grid-template-columns:1fr; }.library-reader-alert { align-items:flex-start; flex-wrap:wrap; }.library-reader-alert button { margin-left:28px; } }
+
+/* Biblioteca: fluxo guiado de circulação */
+.library-flow { padding:28px; }
+.library-flow-steps { display:grid; grid-template-columns:repeat(3,1fr); gap:6px; margin:18px 0 22px; padding:4px; border-radius:10px; background:#f1f3f7; }
+.library-flow-steps span { padding:9px 7px; border-radius:7px; color:#8995a8; text-align:center; font-size:11px; font-weight:800; }
+.library-flow-steps span.is-active { color:#694d8c; background:#fff; box-shadow:0 2px 6px rgba(44,55,77,.08); }
+.library-flow-content { min-height:190px; padding:18px; border:1px solid #e4e8f0; border-radius:13px; background:#fbfcfe; }
+.library-flow-label { display:grid; gap:8px; color:#52627a; font-size:12px; font-weight:800; }
+.library-flow-label select { width:100%; border:1px solid #d8dfeb; border-radius:9px; background:#fff; padding:11px; color:#2e4057; outline:0; }
+.library-flow-label select[multiple] { min-height:150px; }
+.library-flow-reader-summary { display:grid; gap:4px; margin-top:14px; padding:12px; border:1px solid #dce9f4; border-radius:10px; color:#3e5874; background:#f4f9fd; }
+.library-flow-reader-summary strong { font-size:13px; }.library-flow-reader-summary span { color:#75879d; font-size:11px; }
+.library-flow-warning { display:flex; align-items:center; gap:9px; margin-top:12px; padding:11px; border:1px solid #f0d2c3; border-radius:9px; color:#a35a39; background:#fff7f1; }
+.library-flow-warning span { display:grid; gap:3px; }.library-flow-warning strong { font-size:12px; }.library-flow-warning small { color:#987968; font-size:11px; }
+.library-flow-check { display:flex; align-items:center; gap:8px; padding:10px; border-bottom:1px solid #edf0f4; color:#52627a; font-size:12px; }
+.library-flow-check input { accent-color:#73599a; }
+.library-flow-link { margin-top:11px; border:0; color:#73599a; background:transparent; font-size:11px; font-weight:800; }
+.library-flow-review { display:grid; gap:0; border:1px solid #e2e7ef; border-radius:10px; background:#fff; }
+.library-flow-review > span,.library-flow-review > label { display:grid; grid-template-columns:110px 1fr; gap:12px; padding:11px; border-bottom:1px solid #edf0f4; color:#465a73; font-size:12px; }
+.library-flow-review strong { color:#8a96a9; font-size:10px; text-transform:uppercase; letter-spacing:.04em; }
+.library-flow-review input { width:75px; margin-right:5px; border:1px solid #d8dfeb; border-radius:7px; padding:5px; }
+@media (max-width:600px) { .library-flow { padding:22px 18px; }.library-flow-content { padding:13px; }.library-flow-steps span { font-size:10px; }.library-flow-review > span,.library-flow-review > label { grid-template-columns:1fr; gap:4px; } }
