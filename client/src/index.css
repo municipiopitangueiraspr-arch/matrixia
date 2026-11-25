@@ -778,3 +778,31 @@ button:disabled { cursor: not-allowed; opacity: .65; }
 @keyframes library-modal-fade { from { opacity:0; } to { opacity:1; } }
 @keyframes library-modal-rise { from { opacity:0; transform:translateY(10px) scale(.98); } to { opacity:1; transform:none; } }
 @media (max-width:600px) { .library-modal-backdrop { padding:12px; }.library-modal { max-height:92vh; border-radius:16px; }.library-modal > .library-form { padding:22px 18px 18px; }.library-modal .library-form-head { top:-22px; }.library-feedback { padding:24px 18px; } }
+
+
+/* Biblioteca V2: navegação por rotinas de trabalho */
+.library-workspace-nav { display:grid; gap:10px; margin-bottom:18px; }
+.library-workspace-list { display:grid; grid-template-columns:repeat(6, minmax(0,1fr)); gap:7px; padding:6px; border:1px solid #e1e6ef; border-radius:15px; background:#eef1f6; }
+.library-workspace-list button { display:flex; align-items:center; gap:9px; min-width:0; padding:11px 12px; border:1px solid transparent; border-radius:10px; color:#718098; background:transparent; text-align:left; transition:.18s ease; }
+.library-workspace-list button:hover { color:#624b83; background:#faf8fd; }
+.library-workspace-list button.is-active { color:#fff; border-color:#73599a; background:#73599a; box-shadow:0 5px 14px #73599a35; }
+.library-workspace-icon { display:grid; place-items:center; width:30px; height:30px; flex:0 0 auto; border-radius:9px; color:#73599a; background:#e5dff0; }
+.library-workspace-list button.is-active .library-workspace-icon { color:#73599a; background:#fff; }
+.library-workspace-list button > span:last-child { display:grid; min-width:0; gap:3px; }
+.library-workspace-list strong { overflow:hidden; font-size:11px; text-overflow:ellipsis; white-space:nowrap; }
+.library-workspace-list small { overflow:hidden; color:inherit; opacity:.72; font-size:9px; text-overflow:ellipsis; white-space:nowrap; }
+.library-subnav { display:flex; gap:5px; overflow:auto; padding:3px 2px 9px; border-bottom:1px solid #e1e6ef; }
+.library-subnav button { display:inline-flex; align-items:center; gap:6px; flex:0 0 auto; padding:8px 11px; border:1px solid transparent; border-radius:8px; color:#7b899e; background:transparent; font-size:10px; font-weight:800; white-space:nowrap; }
+.library-subnav button:hover { color:#694d8c; background:#f5f1fa; }
+.library-subnav button.is-active { color:#694d8c; border-color:#d6c8e5; background:#f6f1fb; }
+.library-routine-actions { display:grid; gap:13px; margin:0 0 18px; padding:17px; border:1px solid #e1d8ec; border-radius:16px; background:linear-gradient(120deg,#fbf9fd,#f5f1fa); }
+.library-routine-actions h3 { margin:4px 0 0; color:#3d3152; font-size:16px; }
+.library-routine-action-list { display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:8px; }
+.library-routine-action-list button { display:flex; align-items:center; gap:9px; min-width:0; padding:12px; border:1px solid #e2d9ec; border-radius:11px; color:#73599a; background:#fff; text-align:left; transition:.18s ease; }
+.library-routine-action-list button:hover { border-color:#bca8d2; background:#fff; box-shadow:0 7px 16px #73599a18; transform:translateY(-1px); }
+.library-routine-action-list button > span { display:grid; min-width:0; flex:1; gap:3px; }
+.library-routine-action-list strong { color:#3e3151; font-size:10px; }
+.library-routine-action-list small { overflow:hidden; color:#8c819b; font-size:9px; text-overflow:ellipsis; white-space:nowrap; }
+.library-routine-action-list > button > svg:last-child { color:#b4a3c3; }
+@media (max-width:1050px) { .library-workspace-list { grid-template-columns:repeat(3, minmax(0,1fr)); } .library-routine-action-list { grid-template-columns:repeat(2, minmax(0,1fr)); } }
+@media (max-width:620px) { .library-workspace-list { grid-template-columns:repeat(2, minmax(0,1fr)); } .library-workspace-list button { padding:9px; } .library-workspace-list small { display:none; } .library-routine-action-list { grid-template-columns:1fr; } .library-routine-actions { padding:13px; } }
