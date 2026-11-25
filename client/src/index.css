@@ -755,3 +755,8 @@ button:disabled { cursor: not-allowed; opacity: .65; }
 .library-form select[multiple] option { padding: 5px; border-radius: 4px; }
 .library-muted { color: #7d8ba1; font-size: 12px; }
 @media (max-width: 600px) { .library-attachment { align-items: flex-start; } .library-attachment button { margin-left: auto; } }
+
+.library-access-denied { max-width: 680px; margin: 40px auto; text-align: center; color: #73599a; }
+.library-access-denied h2 { margin: 10px 0 8px; color: #263b59; font-size: 22px; }
+.library-access-denied p { margin: 0 auto 18px; max-width: 520px; color: #74819a; line-height: 1.55; }
+.library-access-denied button { border: 0; border-radius: 9px; padding: 10px 14px; color: #fff; background: #73599a; font-weight: 750; }
