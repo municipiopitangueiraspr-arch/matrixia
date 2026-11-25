@@ -1,195 +1,146 @@
 import { useEffect, useMemo, useState } from "react";
 import type { User } from "@supabase/supabase-js";
 import {
-  AlertTriangle,
-  ArrowRight,
-  CalendarClock,
-  CheckCircle2,
-  ChevronDown,
-  ClipboardList,
-  Filter,
-  Info,
-  LoaderCircle,
-  Search,
-  ShieldCheck,
-  SlidersHorizontal,
-  UserRound,
+  AlertTriangle, ArrowRight, CalendarClock, CheckCircle2, ChevronDown, ClipboardList,
+  FileClock, FilePlus2, Filter, History, Info, LoaderCircle, Paperclip, Pencil,
+  Plus, RefreshCw, Search, ShieldCheck, SlidersHorizontal, Trash2, Upload, UserRound,
 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 
-type CatalogRow = {
-  id: string;
-  codigo: string;
-  nome: string;
-  sistema: string | null;
-  categoria: string;
-  natureza: "CONFIRMADA" | "CONDICIONAL" | "GERENCIAL" | "PENDENCIA_VALIDACAO";
-  descricao: string | null;
-  sujeito: string | null;
-  frequencia: string | null;
-  regra_prazo: string | null;
-  consequencia: string | null;
-  ativo: boolean;
-};
+type Nature = "CONFIRMADA" | "CONDICIONAL" | "GERENCIAL" | "PENDENCIA_VALIDACAO";
+type Status = "NAO_INICIADA" | "EM_ANDAMENTO" | "CONCLUIDA" | "ATRASADA" | "DISPENSADA" | "PENDENTE_VALIDACAO";
+type Tab = "catalogo" | "configuracoes" | "competencias" | "evidencias";
 
-type PanelRow = {
-  id: string;
-  competencia_label: string | null;
-  prazo: string;
-  status: "NAO_INICIADA" | "EM_ANDAMENTO" | "CONCLUIDA" | "ATRASADA" | "DISPENSADA" | "PENDENTE_VALIDACAO";
-  codigo: string;
-  nome: string;
-  sistema: string | null;
-  categoria: string;
-  natureza: CatalogRow["natureza"];
-  frequencia: string | null;
-  consequencia: string | null;
-  vencida: boolean;
-  dias_ate_prazo: number;
-};
+type Catalog = { id: string; codigo: string; nome: string; sistema: string | null; categoria: string; natureza: Nature; descricao: string | null; sujeito: string | null; frequencia: string | null; regra_prazo: string | null; consequencia: string | null; fontes: unknown[]; ativo: boolean; updated_at: string };
+type Config = { id: string; municipio_id: string; obrigacao_id: string; aplicabilidade: "APLICAVEL" | "NAO_APLICAVEL" | "VALIDAR"; justificativa: string | null; unidade_responsavel_id: string | null; responsavel_id: number | null; identificador_externo: string | null; identificadores_externos: string[]; adesoes: string[]; observacoes: string | null };
+type Instance = { id: string; municipio_id: string; obrigacao_id: string; configuracao_id: string | null; competencia_inicio: string; competencia_fim: string | null; competencia_label: string | null; prazo: string; periodicidade: "MENSAL" | "BIMESTRAL" | "ANUAL" | "OUTRA" | null; status: Status; unidade_responsavel_id: string | null; responsavel_id: number | null; concluida_em: string | null; observacoes: string | null; concluida_observacao: string | null };
+type Evidence = { id: string; instancia_id: string; nome_arquivo: string; storage_path: string; mime_type: string | null; tamanho_bytes: number | null; descricao: string | null; created_at: string };
+type Event = { id: string; instancia_id: string; tipo: string; status_anterior: string | null; status_novo: string | null; payload: Record<string, unknown>; created_at: string };
+type History = { id: string; obrigacao_id: string; acao: string; dados_anteriores: Record<string, unknown> | null; dados_novos: Record<string, unknown> | null; ator_id: number | null; created_at: string };
+type Audit = { id: string; entidade_tipo: string; entidade_id: string; obrigacao_id: string | null; instancia_id: string | null; acao: string; resumo: string; created_at: string };
+type DirectoryUser = { id: number; nome: string | null; email: string; perfil: string | null };
+type Unit = { id: string; nome: string; sigla: string | null };
+type Context = { municipio_id: string; municipio_nome: string; usuario_id: number | null; pode_gerir: boolean };
 
-type Obligation = CatalogRow & { instance?: PanelRow };
-type FilterStatus = "TODAS" | "CONFIGURADAS" | "AGUARDANDO";
-type FilterNature = "TODAS" | CatalogRow["natureza"];
+type CatalogForm = Omit<Catalog, "id" | "fontes" | "ativo" | "updated_at">;
+type ConfigForm = Pick<Config, "aplicabilidade" | "justificativa" | "unidade_responsavel_id" | "responsavel_id" | "identificador_externo" | "observacoes"> & { adesoes_texto: string; identificadores_texto: string };
+type InstanceForm = Pick<Instance, "obrigacao_id" | "competencia_inicio" | "competencia_fim" | "competencia_label" | "prazo" | "periodicidade" | "status" | "unidade_responsavel_id" | "responsavel_id" | "observacoes" | "concluida_observacao">;
 
-const statusLabels: Record<PanelRow["status"], string> = {
-  NAO_INICIADA: "Não iniciada",
-  EM_ANDAMENTO: "Em andamento",
-  CONCLUIDA: "Concluída",
-  ATRASADA: "Atrasada",
-  DISPENSADA: "Dispensada",
-  PENDENTE_VALIDACAO: "Pendente de validação",
-};
+const emptyCatalog: CatalogForm = { codigo: "", nome: "", sistema: "", categoria: "OBRIGACAO", natureza: "CONFIRMADA", descricao: "", sujeito: "", frequencia: "", regra_prazo: "", consequencia: "" };
+const emptyConfig: ConfigForm = { aplicabilidade: "VALIDAR", justificativa: "", unidade_responsavel_id: null, responsavel_id: null, identificador_externo: "", observacoes: "", adesoes_texto: "", identificadores_texto: "" };
+const emptyInstance: InstanceForm = { obrigacao_id: "", competencia_inicio: "", competencia_fim: "", competencia_label: "", prazo: "", periodicidade: "MENSAL", status: "NAO_INICIADA", unidade_responsavel_id: null, responsavel_id: null, observacoes: "", concluida_observacao: "" };
+const statusLabels: Record<Status, string> = { NAO_INICIADA: "Não iniciada", EM_ANDAMENTO: "Em andamento", CONCLUIDA: "Concluída", ATRASADA: "Atrasada", DISPENSADA: "Dispensada", PENDENTE_VALIDACAO: "Pendente de validação" };
+const natureLabels: Record<Nature, string> = { CONFIRMADA: "Confirmada", CONDICIONAL: "Condicional", GERENCIAL: "Gerencial", PENDENCIA_VALIDACAO: "A validar" };
+const applicationLabels = { APLICAVEL: "Aplicável", NAO_APLICAVEL: "Não aplicável", VALIDAR: "Pendente de validação" };
 
-function formatDate(value: string) {
-  return new Intl.DateTimeFormat("pt-BR", { dateStyle: "short" }).format(new Date(`${value}T12:00:00`));
-}
-
-function natureLabel(value: CatalogRow["natureza"]) {
-  return value === "CONDICIONAL" ? "Condicional" : value === "CONFIRMADA" ? "Confirmada" : value === "PENDENCIA_VALIDACAO" ? "Validar" : "Gerencial";
-}
-
-function instanceStatus(row?: PanelRow) {
-  if (!row) return { label: "Sem competência municipal", className: "health-obligation-status--pending", icon: <SlidersHorizontal size={13} /> };
-  if (row.status === "DISPENSADA") return { label: "Dispensada", className: "health-obligation-status--muted", icon: <Info size={13} /> };
-  if (row.status === "PENDENTE_VALIDACAO") return { label: "Pendente de validação", className: "health-obligation-status--pending", icon: <Info size={13} /> };
-  if (row.vencida) return { label: "Atrasada", className: "health-obligation-status--late", icon: <AlertTriangle size={13} /> };
-  if (row.status === "CONCLUIDA") return { label: statusLabels[row.status], className: "health-obligation-status--done", icon: <CheckCircle2 size={13} /> };
-  return { label: statusLabels[row.status], className: "health-obligation-status--active", icon: <CalendarClock size={13} /> };
-}
+function dateLabel(value: string | null) { return value ? new Intl.DateTimeFormat("pt-BR", { dateStyle: "short" }).format(new Date(`${value.slice(0, 10)}T12:00:00`)) : "—"; }
+function linesToArray(value: string) { return value.split("\n").map((line) => line.trim()).filter(Boolean); }
+function arrayToLines(value: unknown) { return Array.isArray(value) ? value.map((item) => typeof item === "string" ? item : JSON.stringify(item)).join("\n") : ""; }
+function errorMessage(error: { message?: string } | null) { return error?.message || "Não foi possível concluir a operação. Verifique seu acesso e tente novamente."; }
 
 export function HealthObligationsModule({ user, onBack, onLogout }: { user: User; onBack: () => void; onLogout: () => void }) {
-  const [catalog, setCatalog] = useState<CatalogRow[]>([]);
-  const [panel, setPanel] = useState<PanelRow[]>([]);
+  const [tab, setTab] = useState<Tab>("catalogo");
+  const [context, setContext] = useState<Context | null>(null);
+  const [catalog, setCatalog] = useState<Catalog[]>([]);
+  const [configs, setConfigs] = useState<Config[]>([]);
+  const [instances, setInstances] = useState<Instance[]>([]);
+  const [evidences, setEvidences] = useState<Evidence[]>([]);
+  const [events, setEvents] = useState<Event[]>([]);
+  const [history, setHistory] = useState<History[]>([]);
+  const [audits, setAudits] = useState<Audit[]>([]);
+  const [users, setUsers] = useState<DirectoryUser[]>([]);
+  const [units, setUnits] = useState<Unit[]>([]);
   const [loading, setLoading] = useState(true);
+  const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
-  const [panelError, setPanelError] = useState("");
-  const [reloadKey, setReloadKey] = useState(0);
+  const [notice, setNotice] = useState("");
   const [search, setSearch] = useState("");
-  const [status, setStatus] = useState<FilterStatus>("TODAS");
-  const [nature, setNature] = useState<FilterNature>("TODAS");
-  const [system, setSystem] = useState("TODOS");
-  const [showGuide, setShowGuide] = useState(true);
+  const [catalogForm, setCatalogForm] = useState<CatalogForm>(emptyCatalog);
+  const [catalogEditorOpen, setCatalogEditorOpen] = useState(false);
+  const [editingCatalog, setEditingCatalog] = useState<string | null>(null);
+  const [configObligation, setConfigObligation] = useState("");
+  const [configForm, setConfigForm] = useState<ConfigForm>(emptyConfig);
+  const [editingInstance, setEditingInstance] = useState<string | null>(null);
+  const [instanceEditorOpen, setInstanceEditorOpen] = useState(false);
+  const [instanceForm, setInstanceForm] = useState<InstanceForm>(emptyInstance);
+  const [selectedInstance, setSelectedInstance] = useState<string | null>(null);
+  const [evidenceDescription, setEvidenceDescription] = useState("");
+  const [historyObligation, setHistoryObligation] = useState<string | null>(null);
 
-  useEffect(() => {
-    let active = true;
-    async function load() {
-      setLoading(true);
-      setError("");
-      setPanelError("");
-      const [catalogResult, panelResult] = await Promise.all([
-        supabase.from("saude_obrigacoes_catalogo").select("id,codigo,nome,sistema,categoria,natureza,descricao,sujeito,frequencia,regra_prazo,consequencia,ativo").eq("ativo", true).order("codigo").limit(100),
-        supabase.from("saude_painel_obrigacoes").select("id,competencia_label,prazo,status,codigo,nome,sistema,categoria,natureza,frequencia,consequencia,vencida,dias_ate_prazo").order("prazo", { ascending: true }).limit(100),
-      ]);
-      if (!active) return;
-      if (catalogResult.error) setError("Não foi possível carregar o catálogo de obrigações. Verifique seu acesso e tente novamente.");
-      else setCatalog((catalogResult.data || []) as CatalogRow[]);
-      if (panelResult.error) setPanelError("Catálogo disponível; não foi possível consultar as competências municipais agora.");
-      else setPanel((panelResult.data || []) as PanelRow[]);
-      setLoading(false);
-    }
-    load();
-    return () => { active = false; };
-  }, [reloadKey, user.id]);
+  const canManage = Boolean(context?.pode_gerir);
+  const activeCatalog = useMemo(() => catalog.filter((item) => item.ativo), [catalog]);
+  const filteredCatalog = useMemo(() => catalog.filter((item) => `${item.codigo} ${item.nome} ${item.sistema || ""} ${item.categoria}`.toLowerCase().includes(search.toLowerCase().trim())), [catalog, search]);
+  const catalogMap = useMemo(() => new Map(catalog.map((item) => [item.id, item])), [catalog]);
+  const configMap = useMemo(() => new Map(configs.map((item) => [item.obrigacao_id, item])), [configs]);
+  const instanceMap = useMemo(() => new Map(instances.map((item) => [item.id, item])), [instances]);
 
-  const obligations = useMemo<Obligation[]>(() => catalog.map((item) => ({ ...item, instance: panel.find((row) => row.codigo === item.codigo) })), [catalog, panel]);
-  const systems = useMemo(() => Array.from(new Set(obligations.map((item) => item.sistema).filter(Boolean) as string[])).sort(), [obligations]);
-  const filtered = useMemo(() => obligations.filter((item) => {
-    const text = `${item.codigo} ${item.nome} ${item.sistema || ""} ${item.categoria} ${item.sujeito || ""} ${item.descricao || ""} ${item.consequencia || ""}`.toLowerCase();
-    const matchesSearch = text.includes(search.toLowerCase().trim());
-    const matchesNature = nature === "TODAS" || item.natureza === nature;
-    const matchesSystem = system === "TODOS" || item.sistema === system;
-    const matchesStatus = status === "TODAS" || (status === "CONFIGURADAS" ? Boolean(item.instance) : !item.instance);
-    return matchesSearch && matchesNature && matchesSystem && matchesStatus;
-  }), [obligations, nature, search, status, system]);
+  async function loadAll() {
+    setLoading(true); setError("");
+    const contextResult = await supabase.rpc("saude_obrigacoes_contexto");
+    if (contextResult.error || !contextResult.data?.[0]) { setError("Não foi possível identificar o município do usuário autenticado."); setLoading(false); return; }
+    const nextContext = contextResult.data[0] as Context; setContext(nextContext);
+    const [catalogResult, configResult, instanceResult, evidenceResult, eventResult, historyResult, auditResult, usersResult, unitsResult] = await Promise.all([
+      supabase.from("saude_obrigacoes_catalogo").select("id,codigo,nome,sistema,categoria,natureza,descricao,sujeito,frequencia,regra_prazo,consequencia,fontes,ativo,updated_at").order("codigo").limit(300),
+      supabase.from("saude_obrigacoes_configuracoes").select("id,municipio_id,obrigacao_id,aplicabilidade,justificativa,unidade_responsavel_id,responsavel_id,identificador_externo,identificadores_externos,adesoes,observacoes").eq("municipio_id", nextContext.municipio_id).limit(300),
+      supabase.from("saude_obrigacoes_instancias").select("id,municipio_id,obrigacao_id,configuracao_id,competencia_inicio,competencia_fim,competencia_label,prazo,periodicidade,status,unidade_responsavel_id,responsavel_id,concluida_em,observacoes,concluida_observacao").eq("municipio_id", nextContext.municipio_id).order("prazo").limit(500),
+      supabase.from("saude_obrigacoes_evidencias").select("id,instancia_id,nome_arquivo,storage_path,mime_type,tamanho_bytes,descricao,created_at").eq("municipio_id", nextContext.municipio_id).order("created_at", { ascending: false }).limit(500),
+      supabase.from("saude_obrigacoes_eventos").select("id,instancia_id,tipo,status_anterior,status_novo,payload,created_at").eq("municipio_id", nextContext.municipio_id).order("created_at", { ascending: false }).limit(500),
+      supabase.from("saude_obrigacoes_catalogo_historico").select("id,obrigacao_id,acao,dados_anteriores,dados_novos,ator_id,created_at").order("created_at", { ascending: false }).limit(500),
+      supabase.from("saude_obrigacoes_auditoria").select("id,entidade_tipo,entidade_id,obrigacao_id,instancia_id,acao,resumo,created_at").eq("municipio_id", nextContext.municipio_id).order("created_at", { ascending: false }).limit(500),
+      supabase.from("usuarios").select("id,nome,email,perfil").eq("ativo", true).order("nome").limit(300),
+      supabase.from("unidades_organizacionais").select("id,nome,sigla").eq("municipio_id", nextContext.municipio_id).eq("ativo", true).order("ordem").limit(300),
+    ]);
+    const firstError = [catalogResult, configResult, instanceResult].find((result) => result.error);
+    if (firstError?.error) setError(errorMessage(firstError.error));
+    setCatalog((catalogResult.data || []) as Catalog[]); setConfigs((configResult.data || []) as Config[]); setInstances((instanceResult.data || []) as Instance[]);
+    setEvidences((evidenceResult.data || []) as Evidence[]); setEvents((eventResult.data || []) as Event[]); setHistory((historyResult.data || []) as History[]); setAudits((auditResult.data || []) as Audit[]);
+    setUsers((usersResult.data || []) as DirectoryUser[]); setUnits((unitsResult.data || []) as Unit[]); setLoading(false);
+  }
 
-  const configured = obligations.filter((item) => item.instance).length;
-  const overdue = panel.filter((item) => item.vencida).length;
-  const confirmed = obligations.filter((item) => item.natureza === "CONFIRMADA").length;
-  const conditional = obligations.filter((item) => item.natureza === "CONDICIONAL").length;
-  const hasFilters = Boolean(search.trim()) || status !== "TODAS" || nature !== "TODAS" || system !== "TODOS";
-  const clearFilters = () => { setSearch(""); setStatus("TODAS"); setNature("TODAS"); setSystem("TODOS"); };
-  const filteredContext = filtered.length === 0 ? "Nenhuma obrigação" : `${filtered.length} ${filtered.length === 1 ? "obrigação" : "obrigações"}`;
+  useEffect(() => { void loadAll(); }, [user.id]);
+  const showResult = (message: string) => { setNotice(message); window.setTimeout(() => setNotice(""), 4500); };
+  const runMutation = async (operation: () => Promise<{ error: { message?: string } | null }>, success: string) => { setBusy(true); setError(""); const result = await operation(); if (result.error) setError(errorMessage(result.error)); else { showResult(success); await loadAll(); } setBusy(false); };
+  const recordAudit = async (entity: "CONFIGURACAO" | "COMPETENCIA" | "EVIDENCIA", entityId: string, obligationId: string | null, instanceId: string | null, action: string, summary: string, nextData: unknown) => {
+    if (!context || !canManage) return;
+    await supabase.from("saude_obrigacoes_auditoria").insert({ municipio_id: context.municipio_id, entidade_tipo: entity, entidade_id: entityId, obrigacao_id: obligationId, instancia_id: instanceId, acao: action, resumo: summary, dados_novos: nextData, ator_id: context.usuario_id });
+  };
+
+  function startCatalog(item?: Catalog) { setCatalogEditorOpen(true); setEditingCatalog(item?.id || null); setCatalogForm(item ? { codigo: item.codigo, nome: item.nome, sistema: item.sistema || "", categoria: item.categoria, natureza: item.natureza, descricao: item.descricao || "", sujeito: item.sujeito || "", frequencia: item.frequencia || "", regra_prazo: item.regra_prazo || "", consequencia: item.consequencia || "" } : emptyCatalog); setTab("catalogo"); }
+  async function saveCatalog(event: React.FormEvent) { event.preventDefault(); if (!canManage) return; await runMutation(async () => editingCatalog ? await supabase.from("saude_obrigacoes_catalogo").update({ ...catalogForm, updated_at: new Date().toISOString() }).eq("id", editingCatalog) : await supabase.from("saude_obrigacoes_catalogo").insert({ ...catalogForm, fontes: [] }), editingCatalog ? "Obrigação atualizada." : "Obrigação criada."); setEditingCatalog(null); setCatalogEditorOpen(false); setCatalogForm(emptyCatalog); }
+  async function toggleCatalog(item: Catalog) { if (!canManage || !window.confirm(`${item.ativo ? "Inativar" : "Reativar"} a obrigação ${item.codigo}?`)) return; await runMutation(async () => await supabase.from("saude_obrigacoes_catalogo").update({ ativo: !item.ativo }).eq("id", item.id), item.ativo ? "Obrigação inativada." : "Obrigação reativada."); }
+
+  function startConfig(obligationId: string) { const existing = configMap.get(obligationId); setConfigObligation(obligationId); setConfigForm(existing ? { aplicabilidade: existing.aplicabilidade, justificativa: existing.justificativa || "", unidade_responsavel_id: existing.unidade_responsavel_id, responsavel_id: existing.responsavel_id, identificador_externo: existing.identificador_externo || "", observacoes: existing.observacoes || "", adesoes_texto: arrayToLines(existing.adesoes), identificadores_texto: arrayToLines(existing.identificadores_externos) } : emptyConfig); setTab("configuracoes"); }
+  async function saveConfig(event: React.FormEvent) { event.preventDefault(); if (!context || !configObligation || !canManage) return; const payload = { municipio_id: context.municipio_id, obrigacao_id: configObligation, aplicabilidade: configForm.aplicabilidade, justificativa: configForm.justificativa || null, unidade_responsavel_id: configForm.unidade_responsavel_id || null, responsavel_id: configForm.responsavel_id || null, identificador_externo: configForm.identificador_externo || null, identificadores_externos: linesToArray(configForm.identificadores_texto), adesoes: linesToArray(configForm.adesoes_texto), observacoes: configForm.observacoes || null }; const existing = configMap.get(configObligation); await runMutation(async () => existing ? await supabase.from("saude_obrigacoes_configuracoes").update(payload).eq("id", existing.id) : await supabase.from("saude_obrigacoes_configuracoes").insert(payload), "Configuração municipal salva."); if (existing) await recordAudit("CONFIGURACAO", existing.id, configObligation, null, "ATUALIZADA", "Configuração municipal atualizada", payload); setConfigObligation(""); setConfigForm(emptyConfig); }
+
+  function startInstance(instance?: Instance, obligationId?: string) { setInstanceEditorOpen(true); setEditingInstance(instance?.id || null); setInstanceForm(instance ? { obrigacao_id: instance.obrigacao_id, competencia_inicio: instance.competencia_inicio, competencia_fim: instance.competencia_fim || "", competencia_label: instance.competencia_label || "", prazo: instance.prazo, periodicidade: instance.periodicidade || "MENSAL", status: instance.status, unidade_responsavel_id: instance.unidade_responsavel_id, responsavel_id: instance.responsavel_id, observacoes: instance.observacoes || "", concluida_observacao: instance.concluida_observacao || "" } : { ...emptyInstance, obrigacao_id: obligationId || activeCatalog[0]?.id || "" }); setTab("competencias"); }
+  async function saveInstance(event: React.FormEvent) { event.preventDefault(); if (!context || !canManage) return; const config = configMap.get(instanceForm.obrigacao_id); const payload = { municipio_id: context.municipio_id, obrigacao_id: instanceForm.obrigacao_id, configuracao_id: config?.id || null, competencia_inicio: instanceForm.competencia_inicio, competencia_fim: instanceForm.competencia_fim || null, competencia_label: instanceForm.competencia_label || null, prazo: instanceForm.prazo, periodicidade: instanceForm.periodicidade, status: instanceForm.status, unidade_responsavel_id: instanceForm.unidade_responsavel_id || null, responsavel_id: instanceForm.responsavel_id || null, observacoes: instanceForm.observacoes || null, concluida_observacao: instanceForm.concluida_observacao || null, created_by: context.usuario_id }; const existing = editingInstance ? instanceMap.get(editingInstance) : null; await runMutation(async () => existing ? await supabase.from("saude_obrigacoes_instancias").update(payload).eq("id", existing.id) : await supabase.from("saude_obrigacoes_instancias").insert(payload), existing ? "Competência atualizada." : "Competência criada."); const id = existing?.id; if (id) await recordAudit("COMPETENCIA", id, instanceForm.obrigacao_id, id, "ATUALIZADA", "Competência atualizada", payload); setEditingInstance(null); setInstanceEditorOpen(false); setInstanceForm(emptyInstance); }
+  async function removeInstance(instance: Instance) { if (!canManage || !window.confirm("Remover esta competência e suas evidências?")) return; await runMutation(async () => await supabase.from("saude_obrigacoes_instancias").delete().eq("id", instance.id), "Competência removida."); }
+
+  async function uploadEvidence(event: React.ChangeEvent<HTMLInputElement>) { const file = event.target.files?.[0]; if (!file || !context || !selectedInstance || !canManage) return; setBusy(true); setError(""); const path = `${context.municipio_id}/${selectedInstance}/${crypto.randomUUID()}-${file.name.replace(/[^\w.\-]+/g, "_")}`; const upload = await supabase.storage.from("saude-obrigacoes").upload(path, file, { upsert: false, contentType: file.type || undefined }); if (upload.error) { setError(errorMessage(upload.error)); setBusy(false); return; } const insert = await supabase.from("saude_obrigacoes_evidencias").insert({ municipio_id: context.municipio_id, instancia_id: selectedInstance, nome_arquivo: file.name, storage_path: path, mime_type: file.type || null, tamanho_bytes: file.size, descricao: evidenceDescription || null, enviado_por: context.usuario_id }).select("id").single(); if (insert.error) { await supabase.storage.from("saude-obrigacoes").remove([path]); setError(errorMessage(insert.error)); } else { await recordAudit("EVIDENCIA", insert.data.id, instanceMap.get(selectedInstance)?.obrigacao_id || null, selectedInstance, "ADICIONADA", `Comprovante anexado: ${file.name}`, { nome_arquivo: file.name, descricao: evidenceDescription }); showResult("Comprovante anexado com segurança."); setEvidenceDescription(""); await loadAll(); } setBusy(false); event.target.value = ""; }
+  async function deleteEvidence(item: Evidence) { if (!canManage || !window.confirm(`Remover o comprovante ${item.nome_arquivo}?`)) return; setBusy(true); await supabase.storage.from("saude-obrigacoes").remove([item.storage_path]); const result = await supabase.from("saude_obrigacoes_evidencias").delete().eq("id", item.id); if (result.error) setError(errorMessage(result.error)); else { await recordAudit("EVIDENCIA", item.id, instanceMap.get(item.instancia_id)?.obrigacao_id || null, item.instancia_id, "REMOVIDA", `Comprovante removido: ${item.nome_arquivo}`, { nome_arquivo: item.nome_arquivo }); showResult("Comprovante removido."); await loadAll(); } setBusy(false); }
+  async function openEvidence(item: Evidence) { const result = await supabase.storage.from("saude-obrigacoes").createSignedUrl(item.storage_path, 300); if (result.error) setError(errorMessage(result.error)); else window.open(result.data.signedUrl, "_blank", "noopener,noreferrer"); }
+
   const displayName = user.user_metadata?.full_name || user.user_metadata?.name || user.email?.split("@")[0] || "Usuário";
-
-  return (
-    <div className="dashboard-shell health-shell">
-      <header className="app-header">
-        <button className="header-back-button" type="button" onClick={onBack}><ArrowRight size={16} className="header-back-icon" /> Voltar aos módulos</button>
-        <div className="user-menu">
-          <div className="user-copy"><strong>{displayName}</strong><span>{user.email}</span></div>
-          <div className="user-avatar user-avatar--initials" aria-label={`Avatar de ${displayName}`}>{displayName.split(/\s+/).slice(0, 2).map((part: string) => part[0]).join("").toUpperCase()}</div>
-          <button className="user-menu-button" type="button" aria-label="Sair da conta" onClick={onLogout}><ArrowRight size={16} /></button>
-        </div>
-      </header>
-
-      <main className="health-obligations-main">
-        <div className="health-obligations-heading">
-          <div><p className="eyebrow">Saúde / gestão e administração</p><h1>Obrigações e prazos</h1><p>Uma leitura orientada para saber o que já está documentado, o que depende do município e qual é o próximo atendimento.</p></div>
-          <span className="health-obligations-secure"><ShieldCheck size={14} /> Dados protegidos</span>
-        </div>
-
-        <section className="health-obligations-guide" aria-label="Como atender este painel">
-          <div className="health-obligations-guide-head"><div className="health-obligations-guide-title"><span><Info size={16} /></span><div><strong>Como usar este painel</strong><small>O catálogo é a referência. O prazo só aparece quando uma competência municipal for configurada.</small></div></div><button type="button" onClick={() => setShowGuide((current) => !current)} aria-expanded={showGuide}>{showGuide ? "Ocultar orientação" : "Mostrar orientação"}<ChevronDown size={15} className={showGuide ? "is-open" : ""} /></button></div>
-          {showGuide && <div className="health-obligations-guide-steps"><div><b>1</b><span><strong>Conheça a obrigação</strong>Use a natureza, o sistema e a regra de prazo para entender o item.</span></div><div><b>2</b><span><strong>Valide o cenário local</strong>Confirme adesões, unidades, responsáveis e calendário oficial antes de criar competências.</span></div><div><b>3</b><span><strong>Acompanhe o prazo</strong>Depois da configuração, o painel passa a mostrar status, competência e vencimento.</span></div></div>}
-        </section>
-
-        <section className="health-obligation-metrics" aria-label="Resumo das obrigações">
-          <div><ClipboardList size={18} /><strong>{catalog.length}</strong><span>Itens no catálogo</span><small>referência documental</small></div>
-          <div><CheckCircle2 size={18} /><strong>{confirmed}</strong><span>Confirmadas</span><small>aplicabilidade indicada</small></div>
-          <div><SlidersHorizontal size={18} /><strong>{configured}</strong><span>Competências configuradas</span><small>{configured === 0 ? "próxima etapa de atendimento" : "com acompanhamento ativo"}</small></div>
-          <div className={overdue > 0 ? "is-alert" : ""}><AlertTriangle size={18} /><strong>{overdue}</strong><span>Vencidas</span><small>{overdue > 0 ? "requer atenção" : "nenhuma no painel"}</small></div>
-        </section>
-
-        {catalog.length > 0 && configured === 0 && <div className="health-obligations-notice"><SlidersHorizontal size={18} /><div><strong>Próxima etapa: configurar as competências do município.</strong><span>Há {confirmed} obrigações confirmadas e {conditional} condicionais no catálogo. Os prazos dependem da validação local; nenhum vencimento foi presumido.</span></div></div>}
-
-        <section className="health-obligations-panel">
-          <div className="health-obligations-toolbar">
-            <div><div className="health-obligations-section-kicker">Consulta rápida</div><h2>Catálogo de obrigações</h2><p aria-live="polite">{filteredContext} exibidas · {configured === 0 ? "todas sem competência municipal" : `${configured} com competência municipal`}</p></div>
-            <div className="health-obligations-filters">
-              <label className="health-obligations-search"><Search size={15} /><input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Buscar obrigação ou sistema" aria-label="Buscar obrigação ou sistema" /></label>
-              <label><Filter size={14} /><select value={status} onChange={(event) => setStatus(event.target.value as FilterStatus)} aria-label="Filtrar por configuração"><option value="TODAS">Todos os estados</option><option value="AGUARDANDO">Aguardando configuração</option><option value="CONFIGURADAS">Com competência</option></select></label>
-              <label><select value={nature} onChange={(event) => setNature(event.target.value as FilterNature)} aria-label="Filtrar por natureza"><option value="TODAS">Todas as naturezas</option><option value="CONFIRMADA">Confirmadas</option><option value="CONDICIONAL">Condicionais</option><option value="GERENCIAL">Gerenciais</option><option value="PENDENCIA_VALIDACAO">A validar</option></select></label>
-              <label><select value={system} onChange={(event) => setSystem(event.target.value)} aria-label="Filtrar por sistema"><option value="TODOS">Todos os sistemas</option>{systems.map((item) => <option key={item} value={item}>{item}</option>)}</select></label>
-            </div>
-          </div>
-
-          {loading ? <div className="health-obligations-empty"><LoaderCircle size={22} className="health-obligations-spinner" /><span>Carregando obrigações do Supabase…</span></div> : error ? <div className="health-obligations-empty health-obligations-empty--error"><AlertTriangle size={22} /><span>{error}</span><button type="button" onClick={() => setReloadKey((key) => key + 1)}>Tentar novamente</button></div> : <>
-            {panelError && <div className="health-obligations-partial-error" role="status"><AlertTriangle size={16} /><span>{panelError}</span><button type="button" onClick={() => setReloadKey((key) => key + 1)}>Tentar novamente</button></div>}
-            {filtered.length === 0 ? <div className="health-obligations-empty"><Search size={22} /><span>{hasFilters ? "Nenhuma obrigação corresponde aos filtros selecionados." : "O catálogo está vazio."}</span>{hasFilters && <button type="button" onClick={clearFilters}>Limpar filtros</button>}</div> : <div className="health-obligation-list">{filtered.map((item) => {
-            const current = instanceStatus(item.instance);
-            return <article className="health-obligation-card" key={item.id}>
-              <div className="health-obligation-card-top"><div><span className="health-obligation-code">{item.codigo}</span><h3>{item.nome}</h3></div><span className={`health-obligation-status ${current.className}`}>{current.icon}{current.label}</span></div>
-              <p>{item.descricao || "Descrição ainda não informada."}</p>
-              <div className="health-obligation-meta"><span><b>Sistema</b>{item.sistema || "Não informado"}</span><span><b>Natureza</b><em className={item.natureza === "CONDICIONAL" ? "is-conditional" : ""}>{natureLabel(item.natureza)}</em></span><span><b>Frequência</b>{item.frequencia || "A definir"}</span>{item.instance ? <span><b>Prazo</b>{formatDate(item.instance.prazo)}{item.instance.competencia_label ? ` · ${item.instance.competencia_label}` : ""}</span> : <span><b>Prazo</b>Não configurado</span>}</div>
-              <details className="health-obligation-context"><summary><Info size={14} /> Ver contexto de atendimento <ChevronDown size={14} /></summary><div><span><ClipboardList size={14} /><b>Categoria</b>{item.categoria.replaceAll("_", " ")}</span><span><UserRound size={14} /><b>Quem atende</b>{item.sujeito || "Responsabilidade ainda não validada."}</span><span><CalendarClock size={14} /><b>Regra de prazo</b>{item.regra_prazo || "Validar calendário oficial aplicável."}</span><span><AlertTriangle size={14} /><b>Por que importa</b>{item.consequencia || "Avaliar impactos e exigências no cenário local."}</span></div></details>
-            </article>;
-            })}</div>}
-          </>}
-        </section>
-
-        <footer className="health-footer"><span><ShieldCheck size={14} /> Leitura controlada pelo Supabase</span><span>Catálogo global · competências municipais separadas</span><button type="button" onClick={onLogout}>Sair da conta</button></footer>
-      </main>
-    </div>
-  );
+  return <div className="dashboard-shell health-shell"><header className="app-header"><button className="header-back-button" type="button" onClick={onBack}><ArrowRight size={16} className="header-back-icon" /> Voltar aos módulos</button><div className="user-menu"><div className="user-copy"><strong>{displayName}</strong><span>{user.email}</span></div><div className="user-avatar user-avatar--initials">{displayName.split(/\s+/).slice(0, 2).map((part: string) => part[0]).join("").toUpperCase()}</div><button className="user-menu-button" type="button" aria-label="Sair da conta" onClick={onLogout}><ArrowRight size={16} /></button></div></header>
+    <main className="health-obligations-main"><div className="health-obligations-heading"><div><p className="eyebrow">Saúde / gestão operacional</p><h1>Obrigações e prazos</h1><p>Catálogo, configuração municipal, competências, comprovantes e histórico em uma única mesa de atendimento.</p></div><span className="health-obligations-secure"><ShieldCheck size={14} /> RLS e Storage privado</span></div>
+      <div className="health-obligations-context-bar"><span><ShieldCheck size={14} /><b>{context?.municipio_nome || "Contexto municipal"}</b></span><span>{canManage ? "Perfil com permissão de gestão" : "Perfil somente leitura"}</span><button type="button" onClick={() => void loadAll()}><RefreshCw size={14} /> Atualizar</button></div>
+      {notice && <div className="health-obligations-success" role="status"><CheckCircle2 size={16} />{notice}</div>}{error && <div className="health-obligations-error" role="alert"><AlertTriangle size={16} />{error}<button type="button" onClick={() => setError("")}>Fechar</button></div>}
+      <section className="health-obligations-workspace"><nav className="health-obligations-tabs" aria-label="Áreas do módulo">{([ ["catalogo", "Catálogo", ClipboardList], ["configuracoes", "Configurações Municipais", SlidersHorizontal], ["competencias", "Competências", CalendarClock], ["evidencias", "Evidências e Auditoria", History] ] as const).map(([key, label, Icon]) => <button key={key} type="button" className={tab === key ? "is-active" : ""} onClick={() => setTab(key)}><Icon size={16} />{label}</button>)}</nav>
+        {loading ? <div className="health-obligations-empty"><LoaderCircle size={24} className="health-obligations-spinner" />Carregando dados do Supabase…</div> : <>
+          {tab === "catalogo" && <section className="health-obligation-section"><SectionHeader kicker="Referência global" title="Catálogo de obrigações" description={`${catalog.length} registros, incluindo inativos. Toda edição gera histórico.`} action={canManage ? <button className="health-action-button" type="button" onClick={() => startCatalog()}><Plus size={15} /> Nova obrigação</button> : null} /><div className="health-obligations-filters"><label className="health-obligations-search"><Search size={15} /><input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Buscar código, nome ou sistema" aria-label="Buscar no catálogo" /></label></div>{catalogEditorOpen ? <CatalogEditor form={catalogForm} setForm={setCatalogForm} editing={Boolean(editingCatalog)} onCancel={() => { setEditingCatalog(null); setCatalogEditorOpen(false); setCatalogForm(emptyCatalog); }} onSubmit={saveCatalog} busy={busy} /> : null}<div className="health-admin-list">{filteredCatalog.map((item) => <article className={`health-admin-row ${!item.ativo ? "is-inactive" : ""}`} key={item.id}><div className="health-admin-row-main"><span className="health-obligation-code">{item.codigo}</span><h3>{item.nome}</h3><p>{item.descricao || "Descrição ainda não informada."}</p><div className="health-admin-tags"><span>{item.sistema || "Sistema não informado"}</span><span>{natureLabels[item.natureza]}</span><span>{item.ativo ? "Ativa" : "Inativa"}</span></div></div><div className="health-admin-actions">{canManage && <><button type="button" title="Editar" onClick={() => startCatalog(item)}><Pencil size={15} /></button><button type="button" title={item.ativo ? "Inativar" : "Reativar"} onClick={() => void toggleCatalog(item)}>{item.ativo ? <Trash2 size={15} /> : <RefreshCw size={15} />}</button></>}<button type="button" onClick={() => setHistoryObligation(historyObligation === item.id ? null : item.id)}><FileClock size={15} /> Histórico</button></div>{historyObligation === item.id && <HistoryList items={history.filter((entry) => entry.obrigacao_id === item.id)} users={users} />}</article>)}</div></section>}
+          {tab === "configuracoes" && <section className="health-obligation-section"><SectionHeader kicker="Validação local" title="Configurações Municipais" description="Aplique somente o que já foi validado pela equipe e registre a fonte da decisão." /><div className="health-admin-list">{activeCatalog.map((item) => { const config = configMap.get(item.id); return <article className="health-admin-row" key={item.id}><div className="health-admin-row-main"><span className="health-obligation-code">{item.codigo}</span><h3>{item.nome}</h3><div className="health-admin-tags"><span className={`health-application health-application--${(config?.aplicabilidade || "VALIDAR").toLowerCase()}`}>{applicationLabels[config?.aplicabilidade || "VALIDAR"]}</span><span>{config?.responsavel_id ? users.find((person) => person.id === config.responsavel_id)?.nome || "Responsável informado" : "Responsável não informado"}</span><span>{config?.unidade_responsavel_id ? units.find((unit) => unit.id === config.unidade_responsavel_id)?.nome || "Unidade informada" : "Unidade não informada"}</span></div></div>{canManage && <button className="health-action-button health-action-button--quiet" type="button" onClick={() => startConfig(item.id)}><Pencil size={14} /> {config ? "Editar" : "Configurar"}</button>}</article>; })}</div>{configObligation && <ConfigEditor form={configForm} setForm={setConfigForm} obligation={catalogMap.get(configObligation)} users={users} units={units} onCancel={() => { setConfigObligation(""); setConfigForm(emptyConfig); }} onSubmit={saveConfig} busy={busy} />}</section>}
+          {tab === "competencias" && <section className="health-obligation-section"><SectionHeader kicker="Calendário confirmado" title="Competências" description={`${instances.length} períodos cadastrados. Nenhuma competência foi criada automaticamente.`} action={canManage ? <button className="health-action-button" type="button" onClick={() => startInstance()}><Plus size={15} /> Nova competência</button> : null} />{instanceEditorOpen ? <InstanceEditor form={instanceForm} setForm={setInstanceForm} editing={Boolean(editingInstance)} catalog={activeCatalog} users={users} units={units} onCancel={() => { setEditingInstance(null); setInstanceEditorOpen(false); setInstanceForm(emptyInstance); }} onSubmit={saveInstance} busy={busy} /> : null}<div className="health-admin-list">{instances.map((item) => <article className="health-admin-row" key={item.id}><div className="health-admin-row-main"><span className="health-obligation-code">{catalogMap.get(item.obrigacao_id)?.codigo || "Obrigação"} · {item.periodicidade || "Período"}</span><h3>{catalogMap.get(item.obrigacao_id)?.nome || "Obrigação não encontrada"}</h3><div className="health-admin-tags"><span>{item.competencia_label || `${dateLabel(item.competencia_inicio)}${item.competencia_fim ? ` a ${dateLabel(item.competencia_fim)}` : ""}`}</span><span className={`health-status health-status--${item.status.toLowerCase()}`}>{statusLabels[item.status]}</span><span>Prazo: {dateLabel(item.prazo)}</span>{item.concluida_em && <span>Concluída em {dateLabel(item.concluida_em)}</span>}</div></div>{canManage && <div className="health-admin-actions"><button type="button" onClick={() => startInstance(item)}><Pencil size={15} /> Editar</button><button type="button" onClick={() => void removeInstance(item)}><Trash2 size={15} /></button></div>}</article>)}</div></section>}
+          {tab === "evidencias" && <section className="health-obligation-section"><SectionHeader kicker="Provas e rastreabilidade" title="Evidências e Auditoria" description="Comprovantes ficam privados e são acessados por URL assinada temporária." />{canManage && <div className="health-upload-panel"><label>Competência para anexar<select value={selectedInstance || ""} onChange={(event) => setSelectedInstance(event.target.value)}><option value="">Selecione uma competência</option>{instances.map((item) => <option key={item.id} value={item.id}>{catalogMap.get(item.obrigacao_id)?.codigo} · {item.competencia_label || dateLabel(item.competencia_inicio)}</option>)}</select></label><label>Descrição do comprovante<input value={evidenceDescription} onChange={(event) => setEvidenceDescription(event.target.value)} placeholder="Ex.: protocolo, relatório ou recibo" /></label><label className="health-file-button"><Upload size={15} /> Anexar comprovante<input type="file" accept=".pdf,.png,.jpg,.jpeg,.webp,.doc,.docx,.odt" disabled={!selectedInstance || busy} onChange={uploadEvidence} /></label></div>}<div className="health-admin-list">{evidences.map((item) => <article className="health-admin-row" key={item.id}><div className="health-admin-row-main"><span className="health-obligation-code">{catalogMap.get(instanceMap.get(item.instancia_id)?.obrigacao_id || "")?.codigo || "EVIDÊNCIA"}</span><h3>{item.nome_arquivo}</h3><p>{item.descricao || "Sem descrição adicional."} · {Math.round((item.tamanho_bytes || 0) / 1024)} KB · {dateLabel(item.created_at)}</p></div><div className="health-admin-actions"><button type="button" onClick={() => void openEvidence(item)}><Paperclip size={15} /> Abrir</button>{canManage && <button type="button" onClick={() => void deleteEvidence(item)}><Trash2 size={15} /></button>}</div></article>)}{evidences.length === 0 && <EmptyMessage text="Nenhum comprovante anexado às competências." />}</div><AuditTimeline audits={audits} events={events} instanceMap={instanceMap} catalogMap={catalogMap} /></section>}
+        </>}</section>
+      <footer className="health-footer"><span><ShieldCheck size={14} /> RLS por município</span><span>Catálogo global · dados locais separados</span><button type="button" onClick={onLogout}>Sair da conta</button></footer>
+    </main></div>;
 }
+
+function SectionHeader({ kicker, title, description, action }: { kicker: string; title: string; description: string; action?: React.ReactNode }) { return <div className="health-section-header"><div><div className="health-obligations-section-kicker">{kicker}</div><h2>{title}</h2><p>{description}</p></div>{action}</div>; }
+function EmptyMessage({ text }: { text: string }) { return <div className="health-obligations-empty"><Info size={20} />{text}</div>; }
+function CatalogEditor({ form, setForm, editing, onCancel, onSubmit, busy }: { form: CatalogForm; setForm: React.Dispatch<React.SetStateAction<CatalogForm>>; editing: boolean; onCancel: () => void; onSubmit: (event: React.FormEvent) => void; busy: boolean }) { const field = (key: keyof CatalogForm, label: string, area = false) => area ? <label>{label}<textarea value={String(form[key] || "")} onChange={(event) => setForm((current) => ({ ...current, [key]: event.target.value }))} /></label> : <label>{label}<input required={key === "codigo" || key === "nome"} value={String(form[key] || "")} onChange={(event) => setForm((current) => ({ ...current, [key]: event.target.value }))} /></label>; return <form className="health-editor" onSubmit={onSubmit}><div className="health-editor-title"><FilePlus2 size={17} />{editing ? "Editar obrigação" : "Nova obrigação"}</div><div className="health-form-grid">{field("codigo", "Código")}{field("nome", "Nome")}{field("sistema", "Sistema")}{<label>Categoria<select value={form.categoria} onChange={(event) => setForm((current) => ({ ...current, categoria: event.target.value }))}><option>OBRIGACAO</option><option>INDICADOR</option><option>INSTRUMENTO_PLANEJAMENTO</option></select></label>}{<label>Natureza<select value={form.natureza} onChange={(event) => setForm((current) => ({ ...current, natureza: event.target.value as Nature }))}>{Object.entries(natureLabels).map(([key, value]) => <option key={key} value={key}>{value}</option>)}</select></label>}{field("frequencia", "Frequência")}{field("sujeito", "Sujeito responsável")}{field("regra_prazo", "Regra de prazo", true)}{field("descricao", "Descrição", true)}{field("consequencia", "Consequência", true)}</div><EditorActions onCancel={onCancel} busy={busy} /></form>; }
+function ConfigEditor({ form, setForm, obligation, users, units, onCancel, onSubmit, busy }: { form: ConfigForm; setForm: React.Dispatch<React.SetStateAction<ConfigForm>>; obligation?: Catalog; users: DirectoryUser[]; units: Unit[]; onCancel: () => void; onSubmit: (event: React.FormEvent) => void; busy: boolean }) { return <form className="health-editor" onSubmit={onSubmit}><div className="health-editor-title"><SlidersHorizontal size={17} />Configurar: {obligation?.codigo} · {obligation?.nome}</div><div className="health-form-grid"><label>Aplicabilidade<select value={form.aplicabilidade} onChange={(event) => setForm((current) => ({ ...current, aplicabilidade: event.target.value as Config["aplicabilidade"] }))}><option value="VALIDAR">Pendente de validação</option><option value="APLICAVEL">Aplicável</option><option value="NAO_APLICAVEL">Não aplicável</option></select></label><label>Responsável<select value={form.responsavel_id || ""} onChange={(event) => setForm((current) => ({ ...current, responsavel_id: event.target.value ? Number(event.target.value) : null }))}><option value="">Ainda não informado</option>{users.map((item) => <option key={item.id} value={item.id}>{item.nome || item.email}</option>)}</select></label><label>Unidade responsável<select value={form.unidade_responsavel_id || ""} onChange={(event) => setForm((current) => ({ ...current, unidade_responsavel_id: event.target.value || null }))}><option value="">Ainda não informada</option>{units.map((item) => <option key={item.id} value={item.id}>{item.sigla ? `${item.sigla} · ` : ""}{item.nome}</option>)}</select></label><label>Identificador externo<input value={form.identificador_externo || ""} onChange={(event) => setForm((current) => ({ ...current, identificador_externo: event.target.value }))} /></label><label>Adesões registradas<textarea placeholder="Uma adesão por linha" value={form.adesoes_texto} onChange={(event) => setForm((current) => ({ ...current, adesoes_texto: event.target.value }))} /></label><label>Identificadores adicionais<textarea placeholder="Um identificador por linha" value={form.identificadores_texto} onChange={(event) => setForm((current) => ({ ...current, identificadores_texto: event.target.value }))} /></label><label>Justificativa<textarea value={form.justificativa || ""} onChange={(event) => setForm((current) => ({ ...current, justificativa: event.target.value }))} /></label><label>Observações<textarea value={form.observacoes || ""} onChange={(event) => setForm((current) => ({ ...current, observacoes: event.target.value }))} /></label></div><EditorActions onCancel={onCancel} busy={busy} /></form>; }
+function InstanceEditor({ form, setForm, editing, catalog, users, units, onCancel, onSubmit, busy }: { form: InstanceForm; setForm: React.Dispatch<React.SetStateAction<InstanceForm>>; editing: boolean; catalog: Catalog[]; users: DirectoryUser[]; units: Unit[]; onCancel: () => void; onSubmit: (event: React.FormEvent) => void; busy: boolean }) { return <form className="health-editor" onSubmit={onSubmit}><div className="health-editor-title"><CalendarClock size={17} />{editing ? "Editar competência" : "Nova competência"}</div><div className="health-form-grid"><label>Obrigação<select required value={form.obrigacao_id} onChange={(event) => setForm((current) => ({ ...current, obrigacao_id: event.target.value }))}><option value="">Selecione</option>{catalog.map((item) => <option key={item.id} value={item.id}>{item.codigo} · {item.nome}</option>)}</select></label><label>Periodicidade<select value={form.periodicidade || "MENSAL"} onChange={(event) => setForm((current) => ({ ...current, periodicidade: event.target.value as InstanceForm["periodicidade"] }))}><option value="MENSAL">Mensal</option><option value="BIMESTRAL">Bimestral</option><option value="ANUAL">Anual</option><option value="OUTRA">Outra</option></select></label><label>Início da competência<input required type="date" value={form.competencia_inicio} onChange={(event) => setForm((current) => ({ ...current, competencia_inicio: event.target.value }))} /></label><label>Fim da competência<input type="date" value={form.competencia_fim || ""} onChange={(event) => setForm((current) => ({ ...current, competencia_fim: event.target.value }))} /></label><label>Prazo<input required type="date" value={form.prazo} onChange={(event) => setForm((current) => ({ ...current, prazo: event.target.value }))} /></label><label>Rótulo do período<input placeholder="Ex.: Janeiro/2026" value={form.competencia_label || ""} onChange={(event) => setForm((current) => ({ ...current, competencia_label: event.target.value }))} /></label><label>Status<select value={form.status} onChange={(event) => setForm((current) => ({ ...current, status: event.target.value as Status }))}>{Object.entries(statusLabels).map(([key, value]) => <option key={key} value={key}>{value}</option>)}</select></label><label>Responsável<select value={form.responsavel_id || ""} onChange={(event) => setForm((current) => ({ ...current, responsavel_id: event.target.value ? Number(event.target.value) : null }))}><option value="">Ainda não informado</option>{users.map((item) => <option key={item.id} value={item.id}>{item.nome || item.email}</option>)}</select></label><label>Unidade<select value={form.unidade_responsavel_id || ""} onChange={(event) => setForm((current) => ({ ...current, unidade_responsavel_id: event.target.value || null }))}><option value="">Ainda não informada</option>{units.map((item) => <option key={item.id} value={item.id}>{item.nome}</option>)}</select></label><label>Observações<textarea value={form.observacoes || ""} onChange={(event) => setForm((current) => ({ ...current, observacoes: event.target.value }))} /></label><label>Registro de conclusão<textarea placeholder="Informe o que foi concluído" value={form.concluida_observacao || ""} onChange={(event) => setForm((current) => ({ ...current, concluida_observacao: event.target.value }))} /></label></div><EditorActions onCancel={onCancel} busy={busy} /></form>; }
+function EditorActions({ onCancel, busy }: { onCancel: () => void; busy: boolean }) { return <div className="health-editor-actions"><button type="button" onClick={onCancel}>Cancelar</button><button className="health-action-button" type="submit" disabled={busy}>{busy ? <LoaderCircle size={14} className="health-obligations-spinner" /> : <CheckCircle2 size={14} />} Salvar</button></div>; }
+function HistoryList({ items, users }: { items: History[]; users: DirectoryUser[] }) { return <div className="health-history"><strong>Histórico do catálogo</strong>{items.length === 0 ? <span>Nenhum evento registrado.</span> : items.map((item) => <div key={item.id}><FileClock size={14} /><span><b>{item.acao}</b>{dateLabel(item.created_at)} · {users.find((person) => person.id === item.ator_id)?.nome || "Sistema"}<details><summary>Ver snapshot da alteração</summary><pre>{JSON.stringify({ anterior: item.dados_anteriores, novo: item.dados_novos }, null, 2)}</pre></details></span></div>)}</div>; }
+function AuditTimeline({ audits, events, instanceMap, catalogMap }: { audits: Audit[]; events: Event[]; instanceMap: Map<string, Instance>; catalogMap: Map<string, Catalog> }) { return <div className="health-audit-panel"><div className="health-editor-title"><History size={17} /> Linha do tempo de alterações</div>{audits.length === 0 && events.length === 0 ? <span>Nenhum evento de competência ou auditoria municipal registrado.</span> : <div className="health-timeline">{[...audits.map((item) => ({ id: item.id, date: item.created_at, text: item.resumo, type: item.entidade_tipo })), ...events.map((item) => ({ id: item.id, date: item.created_at, text: `${item.tipo} · ${catalogMap.get(instanceMap.get(item.instancia_id)?.obrigacao_id || "")?.codigo || "competência"}`, type: "EVENTO" }))].sort((a, b) => b.date.localeCompare(a.date)).map((item) => <div key={item.id}><span className="health-timeline-dot" /><div><b>{item.type}</b><p>{item.text}</p><small>{dateLabel(item.date)}</small></div></div>)}</div>}</div>; }
