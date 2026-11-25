@@ -61,15 +61,11 @@ returns boolean language sql security definer stable set search_path = public, a
   select exists (
     select 1
     from public.usuarios u
-    join public.municipal_user_secretariats mus on mus.user_id = u.id
+    left join public.municipal_user_secretariats mus on mus.user_id = u.id
     where u.uuid = auth.uid()
       and u.ativo = true
-      and mus.secretariat_id = 'health'
-      and (
-        mus.user_id = u.id
-        or mus.user_id is not null
-      )
       and app_private.current_municipio_id() = _municipio_id
+      and (app_private.current_user_is_admin() or mus.secretariat_id = 'health')
   );
 $$;
 
