@@ -918,3 +918,49 @@ button:disabled { cursor: not-allowed; opacity: .65; }
 .governance-timeline { display:grid; gap:0; margin:2px 0 0 7px; border-left:2px solid #d8e9ee; }.governance-timeline article { position:relative; display:flex; gap:12px; padding:0 0 16px 18px; }.governance-timeline-dot { position:absolute; left:-6px; top:2px; width:10px;height:10px;border:2px solid #fff;border-radius:50%;background:#3f8da5;box-shadow:0 0 0 2px #a9d1dc; }.governance-timeline article>div { display:grid; gap:3px; }.governance-timeline strong { color:#355d6f; font-size:12px; }.governance-timeline span { color:#2b7a96; font-size:11px; font-weight:800; }.governance-timeline small { color:#849aa4; font-size:10px; }.governance-empty { display:flex; align-items:center; justify-content:center; gap:9px; min-height:190px; color:#7e949f; font-size:12px; }.governance-empty--small { min-height:120px; border:1px dashed #d7e5ea; border-radius:10px; }.governance-spin { animation:governance-spin 1s linear infinite; } @keyframes governance-spin { to { transform:rotate(360deg); } }
 @media (max-width:900px) { .governance-metrics,.governance-summary-grid { grid-template-columns:repeat(2,1fr); }.governance-two-column { grid-template-columns:1fr; }.governance-heading,.governance-context { align-items:flex-start; flex-direction:column; }.governance-heading { gap:12px; }.governance-refresh { align-self:flex-start; } }
 @media (max-width:620px) { .governance-main { padding:94px 16px 22px; }.governance-kicker { align-items:flex-start; flex-direction:column; gap:8px; }.governance-metrics,.governance-summary-grid { grid-template-columns:1fr 1fr; gap:8px; }.governance-metric { padding:10px; }.governance-metric strong { font-size:21px; }.governance-panel { padding:14px; }.governance-panel-head { align-items:stretch; flex-direction:column; }.governance-search { min-width:0; }.governance-form-grid { grid-template-columns:1fr; }.governance-form-wide { grid-column:auto; }.governance-access-toolbar { align-items:stretch; flex-direction:column; }.governance-access-toolbar label { min-width:0; }.governance-list-card { align-items:flex-start; flex-direction:column; }.governance-inline-actions { justify-content:flex-start; }.governance-table { min-width:700px; } }
+
+/* Governança baseada em atribuições organizacionais */
+.governance-pill--amber { color:#9a6b1e; background:#fff2d7; }
+.governance-muted { color:#879aa3; font-size:10px; }
+.governance-field-help { color:#78909b; font-size:9px; font-weight:600; }
+.governance-integrity-grid { display:grid; grid-template-columns:minmax(0,1.45fr) minmax(190px,.55fr); gap:14px; margin-top:17px; }
+.governance-alert-list { display:grid; gap:8px; }
+.governance-alert-list article { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:4px 10px; padding:11px 12px; border:1px solid #e4ebee; border-radius:10px; background:#fbfdfe; }
+.governance-alert-list article>div { display:grid; gap:3px; min-width:0; }
+.governance-alert-list article strong { color:#365c6e; font-size:11px; }
+.governance-alert-list article small { color:#8196a0; font-size:10px; line-height:1.35; }
+.governance-alert-list article>small { grid-column:1 / -1; }
+.governance-integrity-side { display:grid; align-content:start; gap:8px; }
+.governance-integrity-side>div { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:12px; border:1px solid #e2ebef; border-radius:10px; background:#f8fbfc; }
+.governance-integrity-side span { color:#78909b; font-size:10px; font-weight:750; }
+.governance-integrity-side strong { color:#2d718b; font-family:Manrope,sans-serif; font-size:21px; }
+.governance-users-table { min-width:1100px; }
+.governance-users-table td { vertical-align:top; }
+.governance-assignment-list { display:grid; gap:8px; min-width:190px; }
+.governance-assignment-item { display:grid; gap:3px; padding:8px; border:1px solid #e1ebef; border-radius:8px; background:#fbfdfe; }
+.governance-assignment-item strong { color:#315b6e; font-size:11px; }
+.governance-assignment-item small,.governance-assignment-list>div>small { color:#7c929d; font-size:10px; line-height:1.35; }
+.governance-assignment-item .governance-pill { font-size:8px; justify-self:start; }
+.governance-consistency-warning { color:#a34c4c !important; font-weight:750; }
+.governance-impact-note { display:flex; align-items:flex-start; gap:8px; margin:0 0 13px; padding:10px 11px; border:1px solid #cde5da; border-radius:9px; color:#2d775a; background:#f1fbf5; font-size:10px; line-height:1.4; }
+.governance-impact-note svg { flex:0 0 auto; margin-top:1px; }
+.governance-impact-note strong { color:#23694f; }
+.governance-impact-note--warning { border-color:#f0d8a7; color:#8a671f; background:#fff9eb; }
+.governance-impact-note--warning strong { color:#86621b; }
+.governance-access-toolbar { flex-wrap:wrap; }
+.governance-access-count { display:grid; gap:2px; margin-left:auto; padding-bottom:3px; text-align:right; }
+.governance-access-count strong { color:#2b718a; font-family:Manrope,sans-serif; font-size:20px; }
+.governance-access-count small { color:#80949f; font-size:10px; }
+.governance-access-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:9px; }
+.governance-access-card { display:grid; gap:11px; padding:14px; border:1px solid #dfe9ed; border-radius:11px; background:linear-gradient(145deg,#fff,#f9fcfd); }
+.governance-access-card>div:first-child { display:grid; gap:3px; }
+.governance-access-card>div:first-child strong { color:#315b6e; font-size:12px; }
+.governance-access-card>div:first-child small { color:#8196a0; font-size:10px; }
+.governance-access-card dl { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; margin:0; }
+.governance-access-card dl>div { display:grid; gap:3px; min-width:0; }
+.governance-access-card dt { color:#92a3aa; font-size:8px; font-weight:850; letter-spacing:.07em; text-transform:uppercase; }
+.governance-access-card dd { overflow-wrap:anywhere; margin:0; color:#4d6f7e; font-size:10px; line-height:1.35; }
+.governance-access-card>.governance-pill { justify-self:start; }
+.governance-audit-details { color:#5f8190 !important; }
+@media (max-width:900px) { .governance-integrity-grid,.governance-access-grid { grid-template-columns:1fr; }.governance-access-count { margin-left:0; text-align:left; } }
+@media (max-width:620px) { .governance-access-card dl { grid-template-columns:1fr; }.governance-integrity-grid { gap:10px; } }
