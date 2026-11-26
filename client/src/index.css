@@ -964,3 +964,20 @@ button:disabled { cursor: not-allowed; opacity: .65; }
 .governance-audit-details { color:#5f8190 !important; }
 @media (max-width:900px) { .governance-integrity-grid,.governance-access-grid { grid-template-columns:1fr; }.governance-access-count { margin-left:0; text-align:left; } }
 @media (max-width:620px) { .governance-access-card dl { grid-template-columns:1fr; }.governance-integrity-grid { gap:10px; } }
+
+/* Governança: administração de módulos, atribuições e escopos */
+.governance-panel-head-actions { display:flex; align-items:center; justify-content:flex-end; gap:9px; }
+.governance-link-button { display:inline-flex; align-items:center; gap:5px; width:max-content; border:0; padding:4px 0; color:#267b9a; background:transparent; font-size:10px; font-weight:800; }
+.governance-link-button:hover { color:#154e69; text-decoration:underline; }
+.governance-list-card--selected { border-color:#76b9ca; background:#f1fbfd; box-shadow:0 0 0 2px #dff2f7; }
+.governance-scope-editor { display:grid; gap:12px; margin-top:17px; padding:16px; border:1px solid #d7e7ec; border-radius:12px; background:#f7fcfd; }
+.governance-scope-list { display:grid; gap:7px; }
+.governance-scope-list .governance-list-card { padding:9px 11px; }
+.governance-scope-list .governance-list-card > span { color:#426d7e; font-size:11px; font-weight:750; }
+.governance-scope-editor .governance-form-grid { align-items:end; }
+.governance-scope-editor .governance-form-actions { margin-top:0; }
+.governance-inline-actions { display:flex; align-items:center; }
+.governance-inline-actions button { white-space:nowrap; }
+@media (max-width:900px) { .governance-panel-head-actions { justify-content:flex-start; } }
+@media (max-width:620px) { .governance-panel-head-actions { align-items:stretch; flex-direction:column; } .governance-panel-head-actions > * { width:100%; } .governance-scope-editor .governance-form-actions { justify-content:stretch; } .governance-scope-editor .governance-form-actions button { width:100%; } }
+.governance-shell button:focus-visible, .governance-shell input:focus-visible, .governance-shell select:focus-visible, .governance-shell textarea:focus-visible { outline:3px solid #73bfd4; outline-offset:2px; }
