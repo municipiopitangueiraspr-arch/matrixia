@@ -50,7 +50,12 @@ function actionLabel(value?: string | null) { const labels: Record<string, strin
 function auditDetails(details?: Record<string, unknown>) { if (!details) return "Detalhes não informados"; const labels: Array<[string, string]> = [["module_label", "módulo"], ["role_label", "papel"], ["org_unit_name", "unidade"], ["scope_type", "tipo de escopo"], ["scope_key", "escopo"], ["valid_from", "início"], ["valid_until", "fim"], ["justification", "justificativa"]]; const values = labels.map(([key, label]) => details[key] !== undefined && details[key] !== null && details[key] !== "" ? `${label}: ${String(details[key])}` : "").filter(Boolean); return values.length ? values.join(" · ") : "Alteração registrada no contexto institucional"; }
 function emptyAssignment(): AssignmentForm { return { id: "", user_id: "", org_unit_id: "", role_id: "", module_ids: [], active: true, valid_from: todayISO(), valid_until: "", justification: "" }; }
 function emptyModule(): ModuleForm { return { id: "", label: "", description: "", icon_name: "ShieldCheck", status_label: "Disponível", sort_order: "0", is_ready: true }; }
-function localDateTime(value?: string | null) { return value ? new Date(value).toISOString().slice(0, 16) : ""; }
+function localDateTime(value?: string | null) {
+  if (!value) return "";
+  const date = new Date(value);
+  const pad = (part: number) => String(part).padStart(2, "0");
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
+}
 function noticeISO(value: string) { return value ? new Date(value).toISOString() : new Date().toISOString(); }
 function emptyNotice(): NoticeForm { return { id: "", title: "", body: "", image_path: "", image_alt: "", sort_order: "1", active: true, valid_from: localDateTime(new Date().toISOString()), valid_until: "", file: null, previewUrl: "" }; }
 function noticeStatusClass(status: Notice["availability_status"]) { return status === "vigente" ? "governance-pill--green" : status === "agendado" ? "governance-pill--blue" : status === "expirado" ? "governance-pill--amber" : "governance-pill--gray"; }
