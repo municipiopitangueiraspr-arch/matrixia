@@ -2,7 +2,7 @@
 
 # Entrega integral — Gestão de Atas, Saldos e Pedidos
 
-- [ ] Catálogo de Administração e Finanças com entradas separadas para Consulta de Atas, Cadastrar Ata, Saúde das Atas, Gestão de Saldos e Consumo, Meu Carrinho, Pedidos e Aprovações, Relatórios, Aditivos e FAQ; retorno correto entre catálogo, módulos e detalhe.
+- [ ] Catálogo de Administração e Finanças com um único módulo chamado Gestão de Saldos, Pedidos e Entregas; todos os fluxos de atas, saldos, consumo, carrinho, pedidos, aprovações, entregas, relatórios, aditivos e FAQ ficam dentro dele; retorno correto entre catálogo, módulo e detalhe.
 - [x] Consulta de Atas com cards, favoritos por usuário, favoritas padrão, alternância favoritas/todas, busca, filtros, alertas de vencimento e visualização existente.
 - [x] Detalhe dedicado com itens/saldos, consumo, consumidores, pedidos/reservas/entregas, timeline, documentos e histórico, sem painel lateral na consulta.
 - [ ] Cadastro de Ata com listagem, novo cadastro, edição, dados completos, itens, cálculos, importação, validação, revisão, publicação e auditoria no Supabase.

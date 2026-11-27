@@ -3,7 +3,7 @@
 Este arquivo é um controle interno de implementação. Nenhuma etapa abaixo pode ser declarada concluída apenas por existir no código; cada item precisa funcionar com dados do Supabase, autenticação, RLS/RPC e publicação validada.
 
 ## Navegação do módulo
-- [ ] Catálogo de Administração e Finanças com entradas próprias para Consulta, Cadastrar Ata, Saúde das Atas, Meu Carrinho, Pedidos e Aprovações, Relatórios, Gestão de Saldos/Consumo, Aditivos e FAQ.
+- [ ] Catálogo de Administração e Finanças com um único módulo Gestão de Saldos, Pedidos e Entregas, contendo internamente Consulta, Cadastro, Saúde, Saldos/Consumo, Carrinho, Pedidos/Aprovações, Entregas, Relatórios, Aditivos e FAQ.
 - [ ] Retorno entre catálogo, cada tela e detalhe sem abrir o módulo errado.
 
 ## Consulta e detalhe
