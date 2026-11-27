@@ -90,3 +90,10 @@
 - [x] **RPCs existentes preservadas** — Criação e itens usam somente `compras_criar_pedido_rascunho` e `compras_substituir_itens_pedido`; reservas, saldo, autorização e auditoria continuam no backend.
 - [x] **Sem prompts para criação** — O fluxo contextual substitui os prompts do cadastro inicial e permite cancelar sem mutação.
 - [ ] **Entrega da Etapa I** — Rodar validações finais, commitar em `main`, enviar ao GitHub e confirmar o workflow do GitHub Pages.
+
+## Correção visual e catálogo de Administração e Finanças
+
+- [x] **CSS completo do módulo** — Restaurar os estilos estruturais de Gestão de Atas e preservar os estilos das Etapas F–I para exibição correta no GitHub Pages.
+- [x] **Catálogo da Secretaria** — Ao clicar em Administração e Finanças, abrir o catálogo de módulos em vez de abrir diretamente a gestão.
+- [x] **Nome e navegação contextual** — Listar “Gestão de Pedidos, Saldos e Entregas” e retornar ao catálogo ao sair do módulo.
+- [ ] **Publicação da correção** — Validar, commitar, publicar e confirmar o workflow do GitHub Pages.

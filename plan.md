@@ -107,3 +107,9 @@ O encerramento permanece delegado exclusivamente a `compras_encerrar_pedido`, ma
 A Etapa I substitui os prompts de criação de pedido por um editor inline no detalhe da ata. O usuário escolhe número, órgão solicitante, unidade organizacional e vários itens com quantidade e lote opcional antes de confirmar. A criação continua em duas RPCs existentes, `compras_criar_pedido_rascunho` e `compras_substituir_itens_pedido`, dentro do fluxo de operação já usado pelo módulo.
 
 Validações locais impedem número vazio, unidade ou órgão ausente, quantidades inválidas e itens repetidos. O backend continua responsável pela autorização, reserva, saldo, RLS e transação; nenhum insert ou update direto é feito pelo frontend e os testes não criam pedidos reais.
+
+## Correção de navegação e apresentação — catálogo de Administração e Finanças
+
+A Secretaria de Administração e Finanças passa a abrir um catálogo operacional próprio. O módulo anteriormente chamado “Gestão de Atas” é listado nesse catálogo como “Gestão de Pedidos, Saldos e Entregas”, preservando a consulta de atas, saldos, pedidos, entregas, documentos e rastreabilidade. O retorno do módulo volta ao catálogo, e o retorno do catálogo volta ao painel de secretarias.
+
+Os estilos estruturais originais de Gestão de Atas foram restaurados junto com as extensões das etapas anteriores, garantindo que o módulo carregue seu layout completo no GitHub Pages.
