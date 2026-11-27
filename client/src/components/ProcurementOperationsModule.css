@@ -204,3 +204,92 @@
   .minutes-card-grid { gap: 13px; padding: 0 14px 16px; }
   .minutes-detail-hero { gap: 10px; }
 }
+
+/* Refinamento de escala: controles mais legíveis e alinhamento consistente. */
+.proc-page-heading { align-items: center; margin-bottom: 22px; }
+.proc-page-heading h1 { font-size: clamp(24px, 2.5vw, 34px); line-height: 1.12; }
+.proc-actions,
+.proc-sticky-actions,
+.proc-order-actions { align-items: center; gap: 10px; }
+.proc-button,
+.proc-primary { min-height: 40px; padding: 10px 15px; border-radius: 9px; font-size: 12px; line-height: 1.2; }
+.proc-button--small { min-height: 34px; padding: 8px 11px; font-size: 11px; }
+.proc-icon-button { width: 34px; height: 34px; padding: 7px; }
+.proc-metrics,
+.proc-overview-grid { gap: 18px; margin-bottom: 26px; }
+.proc-metrics > div,
+.proc-overview-grid article { min-height: 132px; padding: 18px 19px; gap: 8px; align-content: start; }
+.proc-metrics strong,
+.proc-overview-grid article strong { font-size: 25px; line-height: 1.1; }
+.proc-metrics small,
+.proc-overview-grid article small { font-size: 11px; line-height: 1.35; }
+.proc-toolbar { gap: 10px; margin-bottom: 18px; align-items: center; }
+.proc-search,
+.proc-toolbar select,
+.proc-toolbar > label:not(.proc-search) { height: 42px; }
+.proc-search input,
+.proc-toolbar select,
+.proc-toolbar input { font-size: 12px; }
+.proc-table-wrap { border-radius: 13px; }
+.proc-table th { padding: 13px 16px; font-size: 10px; }
+.proc-table td { padding: 15px 16px; font-size: 12px; }
+.proc-table td strong { font-size: 13px; }
+.proc-table td small { font-size: 11px; }
+.proc-form-section { padding: 22px; margin-bottom: 22px; }
+.proc-form-section-head { margin-bottom: 20px; }
+.proc-form-section-head strong { font-size: 16px; }
+.proc-form-grid { gap: 16px; }
+.proc-form-grid label,
+.proc-item-editor label { gap: 7px; font-size: 11px; }
+.proc-form-grid label > input,
+.proc-form-grid label > select,
+.proc-form-grid label > textarea { min-height: 42px; padding: 10px 11px; font-size: 12px; }
+.proc-form-grid label > textarea { min-height: 88px; }
+.proc-items-editor { gap: 12px; }
+.proc-item-editor { gap: 10px; padding-bottom: 12px; }
+.proc-item-editor input { min-height: 38px; padding: 9px; font-size: 12px; }
+.proc-order-card > header { align-items: center; padding: 19px 21px; }
+.proc-order-card h3 { font-size: 16px; line-height: 1.25; }
+.proc-order-card p { font-size: 11px; }
+.proc-order-body { gap: 26px; padding: 20px 21px; }
+.proc-order-actions { padding: 14px 21px; }
+.proc-order-actions .proc-button,
+.proc-order-actions .proc-primary { min-height: 36px; padding: 8px 12px; font-size: 11px; }
+.proc-cart-list,
+.proc-orders-list,
+.proc-faq-list { gap: 18px; }
+.proc-cart-row { gap: 18px; padding: 16px; }
+.proc-cart-row strong { font-size: 13px; }
+.proc-cart-row span { font-size: 11px; }
+.proc-quantity button { width: 30px; height: 30px; }
+.proc-quantity input { width: 52px; min-height: 30px; padding: 6px; }
+.proc-cart-summary { margin-top: 20px; padding: 19px; }
+.proc-cart-summary strong { font-size: 24px; }
+.proc-report-index { gap: 14px; margin-bottom: 24px; }
+.proc-report-index button { min-height: 108px; padding: 16px; gap: 7px; }
+.proc-report-index strong { font-size: 13px; }
+.proc-report-index small { font-size: 11px; }
+.proc-quick-grid { gap: 13px; }
+.proc-quick-grid button { min-height: 44px; padding: 12px 13px; font-size: 12px; }
+.proc-faq-list { gap: 12px; }
+.proc-faq-list button { min-height: 48px; padding: 15px 17px; font-size: 13px; }
+.proc-faq-list p { padding: 0 17px 18px; font-size: 12px; }
+
+@media (max-width: 760px) {
+  .proc-page-heading { align-items: flex-start; gap: 14px; margin-bottom: 18px; }
+  .proc-page-heading h1 { font-size: 25px; }
+  .proc-actions,
+  .proc-sticky-actions { gap: 8px; }
+  .proc-button,
+  .proc-primary { min-height: 42px; }
+  .proc-form-section { padding: 17px; }
+  .proc-metrics > div,
+  .proc-overview-grid article { min-height: 116px; padding: 15px; }
+  .proc-table th,
+  .proc-table td { padding-left: 12px; padding-right: 12px; }
+  .proc-order-card > header,
+  .proc-order-body,
+  .proc-order-actions { padding-left: 16px; padding-right: 16px; }
+  .proc-cart-row { gap: 12px; padding: 14px; }
+  .proc-report-index button { min-height: 92px; }
+}
