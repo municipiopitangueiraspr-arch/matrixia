@@ -44,3 +44,12 @@ Escolha: **Console administrativo editorial**.
 ## Backend e frontend
 
 A migration complementar será aplicada antes das mutações do frontend. O frontend não assumirá um município fixo: as linhas devolvidas pela RLS são a fonte de contexto; unidades e usuários serão consultados pelo contexto municipal do Supabase. Evidências usam paths `municipio_id/instancia_id/arquivo` e URLs assinadas, sem bucket público.
+
+
+## Etapa A — Gestão de Atas no MatrixIA
+
+A primeira entrega de Gestão de Atas será somente de consulta e detalhe operacional, sem migrations e sem mutações no banco. O frontend React usará o Supabase autenticado para consultar `atas`, `itens_ata`, `fornecedores`, `orgaos`, `atas_orgaos_consumidores`, `pedidos`, `itens_pedido`, `consumos`, `pedidos_reservas`, `pedidos_entregas`, `pedidos_entregas_itens`, `pedidos_eventos`, `atas_historico` e `auditoria_eventos`, sempre com filtros client-side sobre os registros já protegidos pela RLS.
+
+A interface seguirá a linguagem visual existente do MatrixIA: cabeçalho operacional, cartões de métricas, filtros, tabela principal e painel de detalhe contextual. O módulo será acessível pelo núcleo compartilhado Administração e Finanças e exibirá a pendência de vínculo com Licitações quando `processo_compras_id` não estiver preenchido. Upload, cadastro, alteração de saldo e pedidos transacionais ficam para as etapas seguintes; a Etapa A não cria registros nem arquivos.
+
+Arquivos principais da Etapa A: `client/src/components/ProcurementMinutesModule.tsx`, `client/src/components/ProcurementMinutesModule.css`, `client/src/lib/atas.ts`, `client/src/pages/Home.tsx` e, se necessário, `client/src/App.tsx`/`public/manus-routes.json`. A entrega deve passar em `pnpm check`, `pnpm test` e `pnpm build:static`, ser commitada em `main` e publicada pelo workflow do GitHub Pages.
