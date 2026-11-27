@@ -58,3 +58,11 @@
 - [x] **Publicação reconciliada** — A RPC `compras_publicar_ata_importacao` exige status `VALIDADO`, perfil autorizado e confirmação explícita; atualiza somente ata e itens existentes, preserva saldos, marca o rascunho como `PUBLICADO` e não cria nem remove itens.
 - [x] **Confirmação no frontend** — A ação Publicar aparece apenas para rascunhos validados, bloqueia snapshot ausente, resume conflitos e solicita confirmação humana antes da transação.
 - [ ] **Entrega da Etapa E** — Rodar validações finais, commitar em `main`, enviar ao GitHub e aguardar o workflow do GitHub Pages.
+
+## Gestão de Atas — Etapa F: edição contextual de pedidos
+
+- [x] **Edição de múltiplos itens em rascunho** — O cartão do pedido permite adicionar, remover e editar vários itens e quantidades em um formulário contextual; o salvamento chama `compras_substituir_itens_pedido`.
+- [x] **Ajuste de pedido em aprovação** — Pedidos aguardando aprovação ou devolvidos para ajuste exibem editor de quantidades e delegam a alteração à RPC `compras_ajustar_itens_pedido`.
+- [x] **Devolução contextual** — O aprovador pode sugerir quantidades por item e informar justificativa mínima de 10 caracteres; a ação chama `compras_devolver_pedido` e deixa status, reservas, notificações e auditoria no backend.
+- [x] **Sem mutação direta** — O frontend não atualiza pedidos, itens, reservas ou status diretamente; após sucesso, recarrega o estado retornado pelo Supabase.
+- [ ] **Entrega da Etapa F** — Rodar validações finais, commitar em `main`, enviar ao GitHub e aguardar a conclusão bem-sucedida do workflow do GitHub Pages.

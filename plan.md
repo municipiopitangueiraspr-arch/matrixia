@@ -83,3 +83,9 @@ No frontend, um documento original pode gerar um rascunho pré-preenchido com o 
 A Etapa E adiciona as RPCs `compras_analisar_publicacao_ata_importacao` e `compras_publicar_ata_importacao`. A primeira compara o snapshot-base do rascunho validado com a ata e os itens atuais, retornando conflitos estruturados; a segunda exige perfil autorizado, status `VALIDADO`, confirmação explícita e executa a atualização em uma única transação. A publicação atualiza somente os campos revisados da ata e itens já existentes, não cria nem remove itens, não altera saldos e marca a importação como `PUBLICADO`.
 
 Novos rascunhos carregam snapshots-base da ata e dos itens no JSON persistido. A interface apresenta a ação Publicar somente para rascunhos validados, bloqueia rascunhos sem snapshot-base, resume conflitos detectados e solicita confirmação final antes da RPC. Nenhuma validação automática cria rascunhos, publica dados ou altera registros reais durante os testes.
+
+## Etapa F — Edição contextual de pedidos
+
+A Etapa F reutiliza as RPCs existentes `compras_substituir_itens_pedido`, `compras_ajustar_itens_pedido` e `compras_devolver_pedido`. Pedidos em rascunho podem ter vários itens adicionados, removidos e quantificados; pedidos aguardando aprovação ou devolvidos podem ter suas quantidades ajustadas conforme as regras de autorização do backend. A devolução registra uma justificativa de no mínimo 10 caracteres e sugestões de quantidade por item.
+
+No frontend, cada cartão de pedido abre um editor inline contextual, sem prompts para o conjunto de itens. O formulário identifica o item da ata, quantidade e lote opcional, valida o payload antes de chamar a RPC e recarrega a fonte de verdade após sucesso. A ação de devolução apresenta as quantidades sugeridas e a justificativa, mantendo reservas, permissões, status e auditoria sob responsabilidade das RPCs existentes.
