@@ -77,3 +77,9 @@ Os documentos ficam listados como “Revisão pendente” e são abertos somente
 A Etapa D cria no Supabase a tabela `compras_atas_importacoes`, segregada por município e protegida por RLS, com JSON de dados, itens, pendências e status de revisão. As RPCs `compras_criar_rascunho_ata_importacao` e `compras_salvar_rascunho_ata_importacao` controlam a criação e o avanço para `EM_REVISAO` ou `VALIDADO` sem permitir que o cliente publique alterações diretamente.
 
 No frontend, um documento original pode gerar um rascunho pré-preenchido com o cadastro atual da ata; o usuário revisa número e objeto, registra pendências e valida somente quando não houver pendências. A validação não altera a ata nem seus itens. A publicação dos dados revisados fica deliberadamente separada para uma etapa posterior, com regras de reconciliação e confirmação próprias.
+
+## Etapa E — Publicação reconciliada
+
+A Etapa E adiciona as RPCs `compras_analisar_publicacao_ata_importacao` e `compras_publicar_ata_importacao`. A primeira compara o snapshot-base do rascunho validado com a ata e os itens atuais, retornando conflitos estruturados; a segunda exige perfil autorizado, status `VALIDADO`, confirmação explícita e executa a atualização em uma única transação. A publicação atualiza somente os campos revisados da ata e itens já existentes, não cria nem remove itens, não altera saldos e marca a importação como `PUBLICADO`.
+
+Novos rascunhos carregam snapshots-base da ata e dos itens no JSON persistido. A interface apresenta a ação Publicar somente para rascunhos validados, bloqueia rascunhos sem snapshot-base, resume conflitos detectados e solicita confirmação final antes da RPC. Nenhuma validação automática cria rascunhos, publica dados ou altera registros reais durante os testes.

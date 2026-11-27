@@ -54,4 +54,7 @@
 - [x] **RPCs transacionais** — Criação e salvamento de rascunhos usam RPCs `compras_criar_rascunho_ata_importacao` e `compras_salvar_rascunho_ata_importacao`, sem inserção direta pelo cliente.
 - [x] **Revisão humana** — O documento anexado pode gerar rascunho, permitir ajuste do número/objeto e registrar pendências restantes.
 - [x] **Validação sem publicação** — O usuário só consegue marcar como `VALIDADO` quando não há pendências; a operação não altera a ata nem os itens.
-- [ ] **Publicação reconciliada** — Aplicar dados validados na ata/itens com uma RPC transacional, revisão de conflitos e confirmação final.
+- [x] **Snapshots-base e conflitos** — Novos rascunhos preservam snapshot da ata e dos itens; a análise compara o estado atual e retorna conflitos estruturados antes da publicação.
+- [x] **Publicação reconciliada** — A RPC `compras_publicar_ata_importacao` exige status `VALIDADO`, perfil autorizado e confirmação explícita; atualiza somente ata e itens existentes, preserva saldos, marca o rascunho como `PUBLICADO` e não cria nem remove itens.
+- [x] **Confirmação no frontend** — A ação Publicar aparece apenas para rascunhos validados, bloqueia snapshot ausente, resume conflitos e solicita confirmação humana antes da transação.
+- [ ] **Entrega da Etapa E** — Rodar validações finais, commitar em `main`, enviar ao GitHub e aguardar o workflow do GitHub Pages.
