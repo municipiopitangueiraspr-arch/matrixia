@@ -8,7 +8,7 @@ export type Pedido = { id: number; numero_pedido: string | null; ata_id: number;
 export type ItemPedido = { id: number; pedido_id: number; item_ata_id: number; quantidade_solicitada: number; valor_total: number; valor_unitario: number };
 export type AtaOrgao = { id: number; ata_id: number; orgao_id: number; ativo: boolean; observacoes: string | null };
 export type AtaHistorico = { id: number; ata_id: number; campo_alterado: string; valor_antigo: string | null; valor_novo: string | null; created_at: string; usuario_id: number | null };
-export type Unidade = { id: string; nome: string; sigla: string | null; legacy_unidade_id: string | null; ativo: boolean };
+export type Unidade = { id: string; nome: string; sigla: string | null; legacy_unidade_id: string | null; legacy_orgao_id: number | null; ativo: boolean };
 export type Reserva = { id: string; pedido_id: number; item_pedido_id: number; item_ata_id: number; quantidade: number; valor: number; status: string; criada_em: string };
 export type Entrega = { id: string; pedido_id: number; numero: number; data_entrega: string; tipo: string; documento_referencia: string | null; observacao: string | null };
 export type EntregaItem = { id: string; entrega_id: string; pedido_id: number; item_pedido_id: number; quantidade: number; observacao: string | null };
@@ -29,7 +29,7 @@ export async function loadAtasWorkspace(): Promise<AtasWorkspaceData> {
     supabase.from("itens_pedido").select("id,pedido_id,item_ata_id,quantidade_solicitada,valor_unitario,valor_total").limit(1500),
     supabase.from("atas_orgaos_consumidores").select("id,ata_id,orgao_id,ativo,observacoes").limit(500),
     supabase.from("atas_historico").select("id,ata_id,campo_alterado,valor_antigo,valor_novo,created_at,usuario_id").order("created_at", { ascending: false }).limit(1500),
-    supabase.from("unidades_organizacionais").select("id,nome,sigla,legacy_unidade_id,ativo").eq("ativo", true).order("nome").limit(300),
+    supabase.from("unidades_organizacionais").select("id,nome,sigla,legacy_unidade_id,legacy_orgao_id,ativo").eq("ativo", true).order("nome").limit(300),
     supabase.from("pedidos_reservas").select("id,pedido_id,item_pedido_id,item_ata_id,quantidade,valor,status,criada_em").order("criada_em", { ascending: false }).limit(1500),
     supabase.from("pedidos_entregas").select("id,pedido_id,numero,data_entrega,tipo,documento_referencia,observacao").order("created_at", { ascending: false }).limit(1000),
     supabase.from("pedidos_entregas_itens").select("id,entrega_id,pedido_id,item_pedido_id,quantidade,observacao").limit(2000),
