@@ -309,3 +309,32 @@
 @media (max-width: 700px) {
   .proc-operations-main > .minutes-shell > .minutes-main { padding: 0 0 24px; }
 }
+
+
+/* Refinamento visual final MatrixIA — shell operacional */
+.proc-operations-main { padding-top: clamp(24px, 3vw, 34px); }
+.proc-page { width: min(100%, 1480px); }
+.proc-page-heading { min-height: 42px; }
+.proc-actions { justify-content: flex-end; }
+.proc-actions > .proc-button,
+.proc-actions > .proc-primary { min-width: 112px; }
+.proc-metrics > div,
+.proc-overview-grid article,
+.proc-form-section,
+.proc-table-wrap,
+.proc-order-card,
+.proc-cart-row { box-shadow: 0 3px 12px rgba(32, 79, 104, .035); }
+.proc-form-section-head { min-height: 30px; }
+.proc-sticky-actions { padding-top: 2px; }
+.proc-button:focus-visible,
+.proc-primary:focus-visible,
+.proc-icon-button:focus-visible,
+.proc-sidebar > button:focus-visible,
+.proc-quick-grid button:focus-visible,
+.proc-faq-list button:focus-visible { outline: 3px solid rgba(52, 155, 190, .28); outline-offset: 2px; }
+@media (max-width: 760px) {
+  .proc-page-heading { min-height: 0; }
+  .proc-actions { justify-content: stretch; }
+  .proc-actions > .proc-button,
+  .proc-actions > .proc-primary { min-width: 0; }
+}

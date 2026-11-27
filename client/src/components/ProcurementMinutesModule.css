@@ -104,3 +104,33 @@
   .minutes-detail-page-actions button,
   .minutes-heading-actions button { min-height: 42px; }
 }
+
+
+/* Refinamento visual final MatrixIA — consulta e detalhe de atas */
+.minutes-main { width: min(100%, 1560px); }
+.minutes-heading-actions { justify-content: flex-end; }
+.minutes-refresh,
+.minutes-primary,
+.minutes-view-toggle button,
+.minutes-favorite-toggle button,
+.minutes-detail-page-tabs button,
+.minutes-detail-tabs button { transition: background .18s ease, border-color .18s ease, color .18s ease, transform .18s ease; }
+.minutes-refresh:hover,
+.minutes-primary:hover,
+.minutes-view-toggle button:hover:not(.is-active),
+.minutes-favorite-toggle button:hover:not(.is-active),
+.minutes-detail-page-tabs button:hover:not(.is-active),
+.minutes-detail-tabs button:hover:not(.is-active) { transform: translateY(-1px); }
+.minutes-card-grid { align-items: stretch; }
+.minutes-ata-card { display: flex; min-height: 270px; flex-direction: column; }
+.minutes-card-footer { margin-top: auto; }
+.minutes-list-row:focus-visible,
+.minutes-ata-card:focus-visible,
+.minutes-refresh:focus-visible,
+.minutes-primary:focus-visible,
+.minutes-detail-page-tabs button:focus-visible,
+.minutes-detail-tabs button:focus-visible { outline: 3px solid rgba(52, 155, 190, .28); outline-offset: 2px; }
+@media (max-width: 760px) {
+  .minutes-heading-actions { justify-content: stretch; }
+  .minutes-ata-card { min-height: 0; }
+}

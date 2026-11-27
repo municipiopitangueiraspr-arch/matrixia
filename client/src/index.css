@@ -1059,3 +1059,210 @@ button:disabled { cursor: not-allowed; opacity: .65; }
 @media (max-width:620px) { .governance-notice-modal-backdrop { align-items:end; padding:0; }.governance-notice-modal { max-height:94vh; padding:14px; border-radius:16px 16px 0 0; }.governance-notice-modal-head { margin-bottom:10px; }.governance-notice-modal-head h2 { font-size:17px; }.governance-notice-modal .governance-notice-preview .governance-notice-preview-carousel > img { min-height:190px; } }
 
 .institutional-carousel-retry { width:max-content; margin-top:7px; padding:6px 10px; border:1px solid #b9d6df; border-radius:6px; color:#2a7186; background:#fff; font-size:10px; font-weight:800; } .institutional-carousel-retry:hover { border-color:#6daabb; background:#eef9fb; }
+
+
+/* Refinamento visual final MatrixIA — dashboard, catálogos e ações */
+.dashboard-main {
+  width: min(100%, 1480px);
+  padding-top: 112px;
+  padding-bottom: 38px;
+}
+.dashboard-section {
+  margin-top: 24px;
+}
+.dashboard-section + .dashboard-section {
+  margin-top: 30px;
+}
+.dashboard-section-heading {
+  align-items: center;
+  margin-bottom: 14px;
+}
+.dashboard-section-heading h2 {
+  font-size: 18px;
+  line-height: 1.2;
+}
+.dashboard-section-heading > span:last-child {
+  padding-bottom: 0;
+  line-height: 1.35;
+}
+.secretariat-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+.dashboard-section--shared .secretariat-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  max-width: none;
+}
+.secretariat-card {
+  min-height: 264px;
+  padding: 10px 10px 13px;
+  border-radius: 14px;
+}
+.secretariat-visual {
+  height: 112px;
+  border-radius: 10px 10px 6px 6px;
+}
+.secretariat-card-copy {
+  margin: 12px 4px 0;
+  gap: 0;
+}
+.secretariat-card-type {
+  min-height: 14px;
+  line-height: 1.2;
+}
+.secretariat-card h2 {
+  margin-top: 5px;
+  line-height: 1.22;
+}
+.secretariat-card p {
+  margin-top: 6px;
+  line-height: 1.4;
+}
+.card-link {
+  min-height: 34px;
+  justify-content: center;
+  margin: 12px 4px 0;
+  padding: 0 10px;
+  border: 1px solid #d7e8ed;
+  border-radius: 8px;
+  color: #176f91;
+  background: #f7fbfc;
+  font-size: 10px;
+  transition: background .18s ease, border-color .18s ease, color .18s ease;
+}
+.secretariat-card:hover .card-link {
+  border-color: #abd1dd;
+  color: #0d5e83;
+  background: #edf8fb;
+}
+.secretariat-card:focus-visible .card-link {
+  border-color: #75b8cb;
+}
+.dashboard-footer {
+  margin-top: 26px;
+  padding-top: 17px;
+}
+
+/* O catálogo administrativo possui um único módulo e deve usar toda a área útil. */
+.administration-shell .health-main {
+  width: min(100%, 1280px);
+  padding-top: 108px;
+}
+.administration-shell .health-heading {
+  margin-bottom: 18px;
+}
+.administration-shell .health-heading h1 {
+  max-width: 880px;
+  line-height: 1.14;
+}
+.administration-shell .health-heading p {
+  max-width: 720px;
+  margin: 8px 0 0;
+  color: #7890a2;
+  font-size: 12px;
+  line-height: 1.45;
+}
+.administration-shell .health-groups {
+  grid-template-columns: minmax(0, 1fr);
+}
+.administration-shell .health-module-grid {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px;
+  padding: 12px;
+}
+.administration-shell .health-module-card {
+  min-height: 178px;
+  align-items: flex-start;
+  padding: 19px 21px 16px;
+  text-align: left;
+}
+.administration-shell .health-module-card strong,
+.administration-shell .health-module-card small {
+  max-width: 760px;
+}
+.administration-shell .health-module-card strong {
+  font-size: 14px;
+  line-height: 1.3;
+}
+.administration-shell .health-module-card small {
+  font-size: 10px;
+  line-height: 1.45;
+}
+.administration-shell .health-module-action {
+  margin-top: auto;
+  padding-top: 12px;
+  font-size: 10px;
+}
+
+/* Controles compartilhados: áreas operacionais com a mesma escala do dashboard. */
+.health-shell button:focus-visible,
+.dashboard-shell button:focus-visible {
+  outline: 3px solid rgba(52, 155, 190, .28);
+  outline-offset: 2px;
+}
+.health-footer {
+  margin-top: 20px;
+}
+
+@media (max-width: 1100px) {
+  .secretariat-grid,
+  .dashboard-section--shared .secretariat-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .secretariat-card {
+    min-height: 258px;
+  }
+}
+
+@media (max-width: 760px) {
+  .dashboard-main {
+    padding: 94px 16px 28px;
+  }
+  .dashboard-section-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .secretariat-grid,
+  .dashboard-section--shared .secretariat-grid {
+    gap: 12px;
+  }
+  .secretariat-card {
+    min-height: 246px;
+    padding: 9px 9px 12px;
+  }
+  .secretariat-visual {
+    height: 104px;
+  }
+  .secretariat-card-copy {
+    margin-top: 10px;
+  }
+  .card-link {
+    min-height: 32px;
+    margin-top: 10px;
+    font-size: 9px;
+  }
+  .administration-shell .health-main {
+    padding: 92px 16px 22px;
+  }
+  .administration-shell .health-module-card {
+    min-height: 168px;
+    padding: 17px;
+  }
+}
+
+@media (max-width: 430px) {
+  .secretariat-grid,
+  .dashboard-section--shared .secretariat-grid {
+    grid-template-columns: 1fr;
+  }
+  .secretariat-card {
+    min-height: 226px;
+  }
+  .secretariat-visual {
+    height: 101px;
+  }
+  .administration-shell .health-module-card {
+    min-height: 178px;
+  }
+}
