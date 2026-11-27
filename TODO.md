@@ -47,3 +47,11 @@
 - [x] **Revisão humana explícita** — Os anexos aparecem como “Revisão pendente” e não alteram automaticamente atas, itens ou saldos.
 - [x] **Acesso seguro** — Documentos são abertos por URL assinada temporária; a listagem usa a tabela existente e a RLS do Supabase.
 - [ ] **Ingestão estruturada** — Criar ou expor o contrato de rascunho de extração, validação campo a campo, revisão humana e publicação confirmada antes de importar dados do arquivo.
+
+## Gestão de Atas — Etapa D: rascunho e revisão
+
+- [x] **Contrato persistente** — Migration `compras_atas_importacoes` criada no Supabase com município, documento, ata, dados, itens, pendências, status e timestamps; RLS separa leitura municipal e gestão por perfil.
+- [x] **RPCs transacionais** — Criação e salvamento de rascunhos usam RPCs `compras_criar_rascunho_ata_importacao` e `compras_salvar_rascunho_ata_importacao`, sem inserção direta pelo cliente.
+- [x] **Revisão humana** — O documento anexado pode gerar rascunho, permitir ajuste do número/objeto e registrar pendências restantes.
+- [x] **Validação sem publicação** — O usuário só consegue marcar como `VALIDADO` quando não há pendências; a operação não altera a ata nem os itens.
+- [ ] **Publicação reconciliada** — Aplicar dados validados na ata/itens com uma RPC transacional, revisão de conflitos e confirmação final.

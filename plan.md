@@ -71,3 +71,9 @@ A interface permite criar um pedido em rascunho a partir da ata selecionada, inc
 A Etapa C adiciona o primeiro passo do fluxo de importação assistida: o usuário autorizado pode anexar o arquivo original da ata diretamente no detalhe do registro. O arquivo é validado no cliente (tipo e limite de 25 MB), enviado ao bucket privado `compras-documentos` em um caminho segregado por município e ata e registrado pela RPC `compras_registrar_documento`. Se o registro falhar, o arquivo é removido do Storage como rollback.
 
 Os documentos ficam listados como “Revisão pendente” e são abertos somente por URL assinada temporária. Esta etapa não extrai nem publica dados automaticamente, pois o schema atual não possui uma entidade de rascunho de ingestão/revisão para atas; a próxima evolução deverá criar esse contrato de revisão ou expor uma RPC existente antes de automatizar a leitura do arquivo.
+
+## Etapa D — Rascunho persistente e revisão humana
+
+A Etapa D cria no Supabase a tabela `compras_atas_importacoes`, segregada por município e protegida por RLS, com JSON de dados, itens, pendências e status de revisão. As RPCs `compras_criar_rascunho_ata_importacao` e `compras_salvar_rascunho_ata_importacao` controlam a criação e o avanço para `EM_REVISAO` ou `VALIDADO` sem permitir que o cliente publique alterações diretamente.
+
+No frontend, um documento original pode gerar um rascunho pré-preenchido com o cadastro atual da ata; o usuário revisa número e objeto, registra pendências e valida somente quando não houver pendências. A validação não altera a ata nem seus itens. A publicação dos dados revisados fica deliberadamente separada para uma etapa posterior, com regras de reconciliação e confirmação próprias.
