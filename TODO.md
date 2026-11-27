@@ -82,3 +82,11 @@
 - [x] **Encerramento seguro** — O botão Encerrar fica indisponível enquanto houver quantidade pendente, sem substituir a RPC `compras_encerrar_pedido` nem alterar dados diretamente.
 - [x] **Sem migration ou dados de teste** — A etapa reutiliza tabelas já carregadas e não cria pedidos, entregas, consumos, uploads ou rascunhos durante validação.
 - [ ] **Entrega da Etapa H** — Rodar validações finais, commitar em `main`, enviar ao GitHub e confirmar o workflow do GitHub Pages.
+
+## Gestão de Atas — Etapa I: criação contextual de pedidos
+
+- [x] **Formulário contextual** — Novo pedido abre editor inline com número, órgão solicitante, unidade organizacional e múltiplos itens.
+- [x] **Validações antes da RPC** — O formulário rejeita campos obrigatórios ausentes, quantidade inválida e item repetido antes de chamar o Supabase.
+- [x] **RPCs existentes preservadas** — Criação e itens usam somente `compras_criar_pedido_rascunho` e `compras_substituir_itens_pedido`; reservas, saldo, autorização e auditoria continuam no backend.
+- [x] **Sem prompts para criação** — O fluxo contextual substitui os prompts do cadastro inicial e permite cancelar sem mutação.
+- [ ] **Entrega da Etapa I** — Rodar validações finais, commitar em `main`, enviar ao GitHub e confirmar o workflow do GitHub Pages.

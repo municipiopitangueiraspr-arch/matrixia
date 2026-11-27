@@ -101,3 +101,9 @@ Cada pedido também exibe as entregas já registradas, número, data, tipo, docu
 A Etapa H deriva, a partir das entregas e itens já carregados, o total solicitado, o total entregue e o restante por pedido. O cartão exibe uma barra de progresso e informa quando todos os itens estão completos. O editor de entrega mostra o restante de cada item e aplica limite máximo local, sem substituir as validações transacionais da RPC.
 
 O encerramento permanece delegado exclusivamente a `compras_encerrar_pedido`, mas o botão fica preventivamente indisponível enquanto houver quantidade pendente. A regra é apenas uma proteção de UX; a autorização definitiva continua no Supabase. Nenhuma migration ou mutação direta foi adicionada.
+
+## Etapa I — Criação contextual de pedidos
+
+A Etapa I substitui os prompts de criação de pedido por um editor inline no detalhe da ata. O usuário escolhe número, órgão solicitante, unidade organizacional e vários itens com quantidade e lote opcional antes de confirmar. A criação continua em duas RPCs existentes, `compras_criar_pedido_rascunho` e `compras_substituir_itens_pedido`, dentro do fluxo de operação já usado pelo módulo.
+
+Validações locais impedem número vazio, unidade ou órgão ausente, quantidades inválidas e itens repetidos. O backend continua responsável pela autorização, reserva, saldo, RLS e transação; nenhum insert ou update direto é feito pelo frontend e os testes não criam pedidos reais.
