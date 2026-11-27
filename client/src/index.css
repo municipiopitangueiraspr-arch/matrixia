@@ -981,3 +981,24 @@ button:disabled { cursor: not-allowed; opacity: .65; }
 @media (max-width:900px) { .governance-panel-head-actions { justify-content:flex-start; } }
 @media (max-width:620px) { .governance-panel-head-actions { align-items:stretch; flex-direction:column; } .governance-panel-head-actions > * { width:100%; } .governance-scope-editor .governance-form-actions { justify-content:stretch; } .governance-scope-editor .governance-form-actions button { width:100%; } }
 .governance-shell button:focus-visible, .governance-shell input:focus-visible, .governance-shell select:focus-visible, .governance-shell textarea:focus-visible { outline:3px solid #73bfd4; outline-offset:2px; }
+
+/* V7: apresentação institucional das secretarias, inspirada no anexo */
+.secretariat-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.secretariat-card { min-height: 128px; padding: 0; overflow: hidden; border: 1px solid #d9e0e4; border-radius: 8px; color: #1d2f3a; background: #fff; box-shadow: 0 2px 5px rgba(34, 52, 63, .08); text-align: left; transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease; }
+.secretariat-card::before, .secretariat-card::after { display: none; }
+.secretariat-card:hover { transform: translateY(-2px); border-color: #aebfc9; box-shadow: 0 6px 14px rgba(34, 52, 63, .13); }
+.secretariat-card:focus-visible { outline: 3px solid #77bfd8; outline-offset: 3px; }
+.secretariat-card-main { display: flex; align-items: center; gap: 12px; min-height: 80px; padding: 12px 12px 10px; }
+.secretariat-icon { display: grid; flex: 0 0 70px; place-items: center; width: 70px; height: 58px; border: 0; border-radius: 5px; color: #304a60; background: #edf1f3; box-shadow: none; }
+.secretariat-card-copy { min-width: 0; margin: 0; text-align: left; }
+.secretariat-card-type { display: none; }
+.secretariat-card h2 { max-width: none; margin: 0; color: #182a35; font-family: Manrope, sans-serif; font-size: 16px; font-weight: 800; line-height: 1.18; letter-spacing: -.035em; }
+.secretariat-card p { display: block; max-width: none; margin: 5px 0 0; overflow: hidden; color: #344854; font-size: 10.5px; line-height: 1.3; text-overflow: ellipsis; white-space: nowrap; }
+.secretariat-card p strong { font-weight: 800; }
+.card-link { display: flex; align-items: center; justify-content: flex-end; gap: 5px; min-height: 42px; margin: 0; padding: 0 15px; border-top: 1px solid #e4e9ec; color: #344854; background: #fff; font-size: 9.5px; font-weight: 800; letter-spacing: .02em; text-transform: uppercase; }
+.card-link svg { transition: transform .18s ease; }
+.secretariat-card:hover .card-link { color: #1e5e79; }
+.secretariat-card:hover .card-link svg { transform: translateX(3px); }
+@media (max-width: 1100px) { .secretariat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 760px) { .secretariat-grid { gap: 11px; } .secretariat-card-main { gap: 10px; padding: 10px; } .secretariat-icon { flex-basis: 58px; width: 58px; height: 54px; } .secretariat-card h2 { font-size: 14px; } .secretariat-card p { font-size: 9.5px; } }
+@media (max-width: 430px) { .secretariat-grid, .dashboard-section--shared .secretariat-grid { grid-template-columns: 1fr; } .secretariat-card-main { min-height: 76px; } }

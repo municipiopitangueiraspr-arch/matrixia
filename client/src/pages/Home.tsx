@@ -1,6 +1,6 @@
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import type { LucideIcon } from "lucide-react";
-import { Activity, ArrowRight, BarChart3, Baby, BookOpen, ChartNoAxesCombined, Check, ChevronDown, ClipboardCheck, ClipboardList, Dna, Edit3, Eye, EyeOff, FileText, GraduationCap, HeartPulse, Library, LockKeyhole, LogOut, Map, MapPin, Mail, Navigation, Pencil, Pill, Plus, Search, Share2, ShieldCheck, Syringe, UserRound, UsersRound } from "lucide-react";
+import { Activity, ArrowRight, BarChart3, Baby, BookOpen, BriefcaseBusiness, ChartNoAxesCombined, Check, ChevronDown, ClipboardCheck, ClipboardList, Construction, Dna, Dumbbell, Edit3, Eye, EyeOff, FileText, GraduationCap, HandHeart, HeartPulse, Landmark, Library, LockKeyhole, LogOut, Map, MapPin, Mail, Navigation, Pencil, Pill, Plus, Search, Share2, ShieldCheck, Sprout, Syringe, UserRound, UsersRound } from "lucide-react";
 import type { User } from "@supabase/supabase-js";
 import { supabase } from "@/lib/supabase";
 import { IntegratedTerritoryModule } from "@/components/IntegratedTerritoryModule";
@@ -176,10 +176,27 @@ function SecretariatIllustration({ art }: { art: SecretariatArt }) {
     <g className="scene-sparkles"><circle cx="15" cy="27" r="3" fill="#fff" /><circle cx="345" cy="48" r="3" fill="#fff" /><path d="m174 18 3 7 7 3-7 3-3 7-3-7-7-3 7-3Z" fill="#fff" opacity=".78" /></g>
   </svg></div>;
 }
+
+const secretariatIcons: Record<SecretariatArt, LucideIcon> = {
+  administracao: Landmark,
+  agricultura: Sprout,
+  assistencia: HandHeart,
+  cultura: Library,
+  economico: BriefcaseBusiness,
+  educacao: BookOpen,
+  esporte: Dumbbell,
+  obras: Construction,
+  saude: HeartPulse,
+  seguranca: LockKeyhole,
+  planejamento: Map,
+  governanca: ShieldCheck,
+  territorio: Map,
+};
+
 function Dashboard({ user, onLogout, onOpen }: { user: User; onLogout: () => void; onOpen: (item: Secretariat) => void }) {
   const displayName = user.user_metadata?.full_name || user.user_metadata?.name || user.email?.split("@")[0] || "Usuário";
   const avatarUrl = user.user_metadata?.avatar_url || user.user_metadata?.picture;
-  const renderCards = (category: Secretariat["category"]) => secretariats.filter((item) => item.category === category).map((item) => <button key={item.name} className={`secretariat-card secretariat-card--${item.tone}`} type="button" onClick={() => onOpen(item)}><SecretariatIllustration art={item.art} /><div className="secretariat-card-copy"><span className="secretariat-card-type">{category === "shared" ? "Núcleo compartilhado" : "Secretaria municipal"}</span><h2>{item.name}</h2><p>{item.description}</p></div><span className="card-link">Acessar a área <ArrowRight size={15} /></span></button>);
+  const renderCards = (category: Secretariat["category"]) => secretariats.filter((item) => item.category === category).map((item) => { const Icon = secretariatIcons[item.art]; return <button key={item.name} className="secretariat-card" type="button" onClick={() => onOpen(item)}><div className="secretariat-card-main"><span className="secretariat-icon" aria-hidden="true"><Icon size={30} strokeWidth={1.8} /></span><div className="secretariat-card-copy"><span className="secretariat-card-type">{category === "shared" ? "Núcleo compartilhado" : "Secretaria municipal"}</span><h2>{item.name}</h2><p><strong>Status:</strong> Disponível <span aria-hidden="true">·</span> Acesso institucional</p></div></div><span className="card-link">Acessar a área <ArrowRight size={15} /></span></button>; });
   return <div className="dashboard-shell"><header className="app-header"><a className="header-brand" href="/matrixia/" aria-label="Voltar ao início"><BrandMark compact /></a><div className="user-menu"><div className="user-copy"><strong>{displayName}</strong><span>{user.email}</span></div>{avatarUrl ? <img className="user-avatar" src={avatarUrl} alt={`Foto de ${displayName}`} /> : <div className="user-avatar user-avatar--initials" aria-label={`Avatar de ${displayName}`}>{initials(user)}</div>}<button className="user-menu-button" type="button" aria-label="Opções da conta" onClick={onLogout}><ChevronDown size={17} /></button></div></header><main className="dashboard-main"><div className="dashboard-intro"><div><p className="eyebrow">MatrixIA / áreas de gestão</p><h1>Olá, {displayName.split(" ")[0]}.</h1><p>Escolha uma área para continuar. Os módulos compartilhados conectam informações usadas por mais de uma secretaria.</p></div><div className="dashboard-status"><span className="status-dot" /> Ambiente protegido</div></div><div className="dashboard-overview" aria-label="Resumo das áreas disponíveis"><div><strong>{secretariats.filter((item) => item.category === "secretariat").length}</strong><span>secretarias</span></div><div><strong>{secretariats.filter((item) => item.category === "shared").length}</strong><span>núcleos compartilhados</span></div><div className="dashboard-overview-note"><ShieldCheck size={16} /><span>Dados protegidos<br /><b>acesso institucional</b></span></div></div><section className="dashboard-section" aria-labelledby="secretarias-heading"><div className="dashboard-section-heading"><div><span className="section-kicker">Áreas finalísticas</span><h2 id="secretarias-heading">Secretarias municipais</h2></div><span>Selecione para ver os módulos</span></div><div className="secretariat-grid">{renderCards("secretariat")}</div></section><section className="dashboard-section dashboard-section--shared" aria-labelledby="shared-heading"><div className="dashboard-section-heading"><div><span className="section-kicker">Estrutura transversal</span><h2 id="shared-heading">Núcleos compartilhados</h2></div><span>Dados que apoiam várias áreas</span></div><div className="secretariat-grid">{renderCards("shared")}</div></section><footer className="dashboard-footer"><span><ShieldCheck size={15} /> Ambiente protegido pelo Supabase</span><button type="button" onClick={onLogout}><LogOut size={15} /> Sair da conta</button></footer></main></div>;
 }
 
