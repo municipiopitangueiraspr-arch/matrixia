@@ -1,1 +1,1 @@
-{"routes":[{"path":"/","title":"MatrixIA | Acesso"},{"path":"/matrixia/","title":"MatrixIA | Acesso"},{"path":"/matrixia/governanca","title":"Governança"}]}
+{"routes":[{"path":"/","title":"MatrixIA"},{"path":"/matrixia","title":"MatrixIA"},{"path":"/matrixia/","title":"MatrixIA"},{"path":"/matrixia/governanca","title":"Governança"},{"path":"/matrixia/atas/:id","title":"Detalhes da ata"},{"path":"/404","title":"Página não encontrada"}]}
