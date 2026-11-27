@@ -65,3 +65,9 @@ A interface segue a linguagem visual existente do MatrixIA: cabeçalho operacion
 A Etapa B foi implementada no mesmo workspace de Gestão de Atas, sem migration e sem banco paralelo. O cliente carrega unidades organizacionais, pedidos, itens, reservas, entregas, eventos e consumos com `select` explícito, limites e a RLS do Supabase como fonte de autorização. As mutações usam exclusivamente as RPCs existentes: criação de rascunho, substituição de itens, envio, aprovação, rejeição, cancelamento, entrega, encerramento e ajuste administrativo de saldo.
 
 A interface permite criar um pedido em rascunho a partir da ata selecionada, incluir o primeiro item com quantidade, enviar para aprovação e executar as ações compatíveis com o status. Também exibe reservas, entregas, consumos e trilhas de histórico. A validação automática não cria pedidos ou consumos reais; as ações só ocorrem quando um usuário autorizado as aciona na tela. Upload assistido, revisão humana e cadastro/importação continuam como próxima etapa.
+
+## Etapa C — Upload assistido e preservação do original
+
+A Etapa C adiciona o primeiro passo do fluxo de importação assistida: o usuário autorizado pode anexar o arquivo original da ata diretamente no detalhe do registro. O arquivo é validado no cliente (tipo e limite de 25 MB), enviado ao bucket privado `compras-documentos` em um caminho segregado por município e ata e registrado pela RPC `compras_registrar_documento`. Se o registro falhar, o arquivo é removido do Storage como rollback.
+
+Os documentos ficam listados como “Revisão pendente” e são abertos somente por URL assinada temporária. Esta etapa não extrai nem publica dados automaticamente, pois o schema atual não possui uma entidade de rascunho de ingestão/revisão para atas; a próxima evolução deverá criar esse contrato de revisão ou expor uma RPC existente antes de automatizar a leitura do arquivo.

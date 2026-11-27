@@ -39,3 +39,11 @@
 
 - [ ] Upload assistido com arquivo original preservado, extração em rascunho, revisão humana, validação e publicação confirmada.
 - [ ] Melhorar edição de múltiplos itens e devolução para ajuste com formulário contextual, mantendo as RPCs existentes.
+
+## Gestão de Atas — Etapa C: upload assistido
+
+- [x] **Arquivo original preservado** — O detalhe da ata permite anexar PDF, Word, Excel, PNG ou JPEG com limite de 25 MB; o arquivo é enviado ao bucket privado `compras-documentos`.
+- [x] **Registro transacional do anexo** — O frontend chama `compras_registrar_documento` com entidade `ATA`, caminho segregado por município/ata, nome, MIME e tamanho; falha no registro remove o arquivo enviado.
+- [x] **Revisão humana explícita** — Os anexos aparecem como “Revisão pendente” e não alteram automaticamente atas, itens ou saldos.
+- [x] **Acesso seguro** — Documentos são abertos por URL assinada temporária; a listagem usa a tabela existente e a RLS do Supabase.
+- [ ] **Ingestão estruturada** — Criar ou expor o contrato de rascunho de extração, validação campo a campo, revisão humana e publicação confirmada antes de importar dados do arquivo.

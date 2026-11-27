@@ -1,6 +1,6 @@
 import { supabase } from "@/lib/supabase";
 
-export type Ata = { id: number; numero_ata: string; processo_administrativo: string | null; numero_pregao: string | null; objeto: string | null; data_assinatura: string | null; data_inicio_vigencia: string | null; data_fim_vigencia: string | null; valor_global: number | null; fornecedor_id: number | null; situacao: string | null; observacoes: string | null; modalidade: string | null; processo_compras_id: string | null; orgao_responsavel_id: number | null };
+export type Ata = { id: number; municipio_id: string; numero_ata: string; processo_administrativo: string | null; numero_pregao: string | null; objeto: string | null; data_assinatura: string | null; data_inicio_vigencia: string | null; data_fim_vigencia: string | null; valor_global: number | null; fornecedor_id: number | null; situacao: string | null; observacoes: string | null; modalidade: string | null; processo_compras_id: string | null; orgao_responsavel_id: number | null };
 export type Fornecedor = { id: number; razao_social: string; nome_fantasia: string | null; cnpj: string };
 export type Orgao = { id: number; nome: string; sigla: string | null };
 export type ItemAta = { id: number; ata_id: number; item_numero: string; descricao: string; unidade_medida: string; quantidade_contratada: number; valor_unitario: number; valor_total: number; saldo_quantidade: number; saldo_valor: number; situacao: string | null };
@@ -14,12 +14,13 @@ export type Entrega = { id: string; pedido_id: number; numero: number; data_entr
 export type EntregaItem = { id: string; entrega_id: string; pedido_id: number; item_pedido_id: number; quantidade: number; observacao: string | null };
 export type PedidoEvento = { id: number; pedido_id: number; evento: string; status_anterior: string | null; status_novo: string | null; justificativa: string | null; ocorrido_em: string; metadados: Record<string, unknown> | null };
 export type Consumo = { id: number; ata_id: number; item_ata_id: number; quantidade: number; valor_total: number; data_consumo: string; observacao: string | null };
+export type DocumentoModulo = { id: string; municipio_id: string; entidade: string; entidade_id: string; nome_arquivo: string; storage_path: string; mime_type: string; tamanho_bytes: number; enviado_por: number; created_at: string };
 
-export type AtasWorkspaceData = { atas: Ata[]; fornecedores: Fornecedor[]; orgaos: Orgao[]; itens: ItemAta[]; pedidos: Pedido[]; itensPedidos: ItemPedido[]; atasOrgaos: AtaOrgao[]; historico: AtaHistorico[]; unidades: Unidade[]; reservas: Reserva[]; entregas: Entrega[]; entregasItens: EntregaItem[]; eventos: PedidoEvento[]; consumos: Consumo[] };
+export type AtasWorkspaceData = { atas: Ata[]; fornecedores: Fornecedor[]; orgaos: Orgao[]; itens: ItemAta[]; pedidos: Pedido[]; itensPedidos: ItemPedido[]; atasOrgaos: AtaOrgao[]; historico: AtaHistorico[]; unidades: Unidade[]; reservas: Reserva[]; entregas: Entrega[]; entregasItens: EntregaItem[]; eventos: PedidoEvento[]; consumos: Consumo[]; documentos: DocumentoModulo[] };
 
 export async function loadAtasWorkspace(): Promise<AtasWorkspaceData> {
   const queries = await Promise.all([
-    supabase.from("atas").select("id,numero_ata,processo_administrativo,numero_pregao,objeto,data_assinatura,data_inicio_vigencia,data_fim_vigencia,valor_global,fornecedor_id,situacao,observacoes,modalidade,processo_compras_id,orgao_responsavel_id").order("data_fim_vigencia", { ascending: true, nullsFirst: false }).limit(500),
+    supabase.from("atas").select("id,municipio_id,numero_ata,processo_administrativo,numero_pregao,objeto,data_assinatura,data_inicio_vigencia,data_fim_vigencia,valor_global,fornecedor_id,situacao,observacoes,modalidade,processo_compras_id,orgao_responsavel_id").order("data_fim_vigencia", { ascending: true, nullsFirst: false }).limit(500),
     supabase.from("fornecedores").select("id,razao_social,nome_fantasia,cnpj").order("razao_social", { ascending: true }).limit(500),
     supabase.from("orgaos").select("id,nome,sigla").order("nome", { ascending: true }).limit(200),
     supabase.from("itens_ata").select("id,ata_id,item_numero,descricao,unidade_medida,quantidade_contratada,valor_unitario,valor_total,saldo_quantidade,saldo_valor,situacao").order("item_numero", { ascending: true }).limit(2000),
@@ -33,10 +34,11 @@ export async function loadAtasWorkspace(): Promise<AtasWorkspaceData> {
     supabase.from("pedidos_entregas_itens").select("id,entrega_id,pedido_id,item_pedido_id,quantidade,observacao").limit(2000),
     supabase.from("pedidos_eventos").select("id,pedido_id,evento,status_anterior,status_novo,justificativa,ocorrido_em,metadados").order("ocorrido_em", { ascending: false }).limit(2000),
     supabase.from("consumos").select("id,ata_id,item_ata_id,quantidade,valor_total,data_consumo,observacao").order("data_consumo", { ascending: false }).limit(2000),
+    supabase.from("compras_documentos_modulo").select("id,municipio_id,entidade,entidade_id,nome_arquivo,storage_path,mime_type,tamanho_bytes,enviado_por,created_at").eq("entidade", "ATA").order("created_at", { ascending: false }).limit(1000),
   ]);
   for (const query of queries) if (query.error) throw query.error;
-  const [atas, fornecedores, orgaos, itens, pedidos, itensPedidos, atasOrgaos, historico, unidades, reservas, entregas, entregasItens, eventos, consumos] = queries;
-  return { atas: (atas.data || []) as Ata[], fornecedores: (fornecedores.data || []) as Fornecedor[], orgaos: (orgaos.data || []) as Orgao[], itens: (itens.data || []) as ItemAta[], pedidos: (pedidos.data || []) as Pedido[], itensPedidos: (itensPedidos.data || []) as ItemPedido[], atasOrgaos: (atasOrgaos.data || []) as AtaOrgao[], historico: (historico.data || []) as AtaHistorico[], unidades: (unidades.data || []) as Unidade[], reservas: (reservas.data || []) as Reserva[], entregas: (entregas.data || []) as Entrega[], entregasItens: (entregasItens.data || []) as EntregaItem[], eventos: (eventos.data || []) as PedidoEvento[], consumos: (consumos.data || []) as Consumo[] };
+  const [atas, fornecedores, orgaos, itens, pedidos, itensPedidos, atasOrgaos, historico, unidades, reservas, entregas, entregasItens, eventos, consumos, documentos] = queries;
+  return { atas: (atas.data || []) as Ata[], fornecedores: (fornecedores.data || []) as Fornecedor[], orgaos: (orgaos.data || []) as Orgao[], itens: (itens.data || []) as ItemAta[], pedidos: (pedidos.data || []) as Pedido[], itensPedidos: (itensPedidos.data || []) as ItemPedido[], atasOrgaos: (atasOrgaos.data || []) as AtaOrgao[], historico: (historico.data || []) as AtaHistorico[], unidades: (unidades.data || []) as Unidade[], reservas: (reservas.data || []) as Reserva[], entregas: (entregas.data || []) as Entrega[], entregasItens: (entregasItens.data || []) as EntregaItem[], eventos: (eventos.data || []) as PedidoEvento[], consumos: (consumos.data || []) as Consumo[], documentos: (documentos.data || []) as DocumentoModulo[] };
 }
 
 export function formatDate(value: string | null | undefined) { if (!value) return "Não informado"; const date = new Date(`${value.slice(0, 10)}T00:00:00Z`); return Number.isNaN(date.getTime()) ? "Data inválida" : new Intl.DateTimeFormat("pt-BR", { dateStyle: "short", timeZone: "UTC" }).format(date); }
