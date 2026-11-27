@@ -293,3 +293,19 @@
   .proc-cart-row { gap: 12px; padding: 14px; }
   .proc-report-index button { min-height: 92px; }
 }
+
+/* A consulta já está dentro do shell operacional; evita repetir seu cabeçalho próprio. */
+.proc-operations-main > .minutes-shell {
+  min-height: auto;
+  background: transparent;
+}
+.proc-operations-main > .minutes-shell > .minutes-header { display: none; }
+.proc-operations-main > .minutes-shell > .minutes-main {
+  max-width: 1500px;
+  padding: 0 0 30px;
+}
+.proc-operations-main > .minutes-shell .minutes-heading { margin-top: 0; }
+
+@media (max-width: 700px) {
+  .proc-operations-main > .minutes-shell > .minutes-main { padding: 0 0 24px; }
+}
