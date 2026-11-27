@@ -89,3 +89,9 @@ Novos rascunhos carregam snapshots-base da ata e dos itens no JSON persistido. A
 A Etapa F reutiliza as RPCs existentes `compras_substituir_itens_pedido`, `compras_ajustar_itens_pedido` e `compras_devolver_pedido`. Pedidos em rascunho podem ter vários itens adicionados, removidos e quantificados; pedidos aguardando aprovação ou devolvidos podem ter suas quantidades ajustadas conforme as regras de autorização do backend. A devolução registra uma justificativa de no mínimo 10 caracteres e sugestões de quantidade por item.
 
 No frontend, cada cartão de pedido abre um editor inline contextual, sem prompts para o conjunto de itens. O formulário identifica o item da ata, quantidade e lote opcional, valida o payload antes de chamar a RPC e recarrega a fonte de verdade após sucesso. A ação de devolução apresenta as quantidades sugeridas e a justificativa, mantendo reservas, permissões, status e auditoria sob responsabilidade das RPCs existentes.
+
+## Etapa G — Entregas contextualizadas e rastreabilidade de pedidos
+
+A Etapa G substitui o registro de entrega por prompts por um editor inline no cartão do pedido aprovado. O usuário pode informar quantidades de vários itens, tipo `PARCIAL` ou `FINAL`, data não futura, documento de referência e observação. O frontend transforma as linhas para o contrato `item_pedido_id`/`quantidade` e chama exclusivamente `compras_registrar_entrega`; validações de completude, excesso e encerramento continuam no Supabase.
+
+Cada pedido também exibe as entregas já registradas, número, data, tipo, documento, itens/quantidades e observação, além de uma linha do tempo compacta dos eventos operacionais. A solução não cria dados durante validação automática, não altera saldos diretamente e mantém a RLS/RPC como fonte de autorização e auditoria.

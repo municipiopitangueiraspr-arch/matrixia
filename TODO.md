@@ -66,3 +66,11 @@
 - [x] **Devolução contextual** — O aprovador pode sugerir quantidades por item e informar justificativa mínima de 10 caracteres; a ação chama `compras_devolver_pedido` e deixa status, reservas, notificações e auditoria no backend.
 - [x] **Sem mutação direta** — O frontend não atualiza pedidos, itens, reservas ou status diretamente; após sucesso, recarrega o estado retornado pelo Supabase.
 - [ ] **Entrega da Etapa F** — Rodar validações finais, commitar em `main`, enviar ao GitHub e aguardar a conclusão bem-sucedida do workflow do GitHub Pages.
+
+## Gestão de Atas — Etapa G: entregas contextualizadas e rastreabilidade
+
+- [x] **Editor de entregas** — Pedidos aprovados exibem formulário inline para vários itens, quantidades positivas, tipo `PARCIAL`/`FINAL`, data não futura, documento e observação.
+- [x] **Contrato transacional preservado** — O frontend chama somente `compras_registrar_entrega` com `item_pedido_id` e `quantidade`; excesso, completude final, status e auditoria permanecem sob responsabilidade da RPC.
+- [x] **Detalhamento operacional** — Cada pedido exibe entregas registradas, número, data, tipo, itens, quantidades, documento, observação e até seis eventos operacionais recentes.
+- [x] **Sem dados reais em validação** — Testes e build são somente estáticos; nenhuma entrega, pedido, consumo, upload ou rascunho é criado automaticamente.
+- [ ] **Entrega da Etapa G** — Commitar em `main`, enviar ao GitHub, aguardar o workflow do GitHub Pages e confirmar a publicação.
