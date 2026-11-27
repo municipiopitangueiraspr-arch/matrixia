@@ -95,3 +95,9 @@ No frontend, cada cartão de pedido abre um editor inline contextual, sem prompt
 A Etapa G substitui o registro de entrega por prompts por um editor inline no cartão do pedido aprovado. O usuário pode informar quantidades de vários itens, tipo `PARCIAL` ou `FINAL`, data não futura, documento de referência e observação. O frontend transforma as linhas para o contrato `item_pedido_id`/`quantidade` e chama exclusivamente `compras_registrar_entrega`; validações de completude, excesso e encerramento continuam no Supabase.
 
 Cada pedido também exibe as entregas já registradas, número, data, tipo, documento, itens/quantidades e observação, além de uma linha do tempo compacta dos eventos operacionais. A solução não cria dados durante validação automática, não altera saldos diretamente e mantém a RLS/RPC como fonte de autorização e auditoria.
+
+## Etapa H — Conciliação visual de entregas e encerramento seguro
+
+A Etapa H deriva, a partir das entregas e itens já carregados, o total solicitado, o total entregue e o restante por pedido. O cartão exibe uma barra de progresso e informa quando todos os itens estão completos. O editor de entrega mostra o restante de cada item e aplica limite máximo local, sem substituir as validações transacionais da RPC.
+
+O encerramento permanece delegado exclusivamente a `compras_encerrar_pedido`, mas o botão fica preventivamente indisponível enquanto houver quantidade pendente. A regra é apenas uma proteção de UX; a autorização definitiva continua no Supabase. Nenhuma migration ou mutação direta foi adicionada.

@@ -74,3 +74,11 @@
 - [x] **Detalhamento operacional** — Cada pedido exibe entregas registradas, número, data, tipo, itens, quantidades, documento, observação e até seis eventos operacionais recentes.
 - [x] **Sem dados reais em validação** — Testes e build são somente estáticos; nenhuma entrega, pedido, consumo, upload ou rascunho é criado automaticamente.
 - [ ] **Entrega da Etapa G** — Commitar em `main`, enviar ao GitHub, aguardar o workflow do GitHub Pages e confirmar a publicação.
+
+## Gestão de Atas — Etapa H: conciliação visual de entregas
+
+- [x] **Progresso por pedido** — Cartões exibem quantidades solicitadas, entregues e restantes com barra de progresso derivada das entregas registradas.
+- [x] **Editor orientado pelo restante** — Cada item do editor mostra a quantidade ainda pendente e limita a entrada local ao restante calculado, mantendo a RPC como validação definitiva.
+- [x] **Encerramento seguro** — O botão Encerrar fica indisponível enquanto houver quantidade pendente, sem substituir a RPC `compras_encerrar_pedido` nem alterar dados diretamente.
+- [x] **Sem migration ou dados de teste** — A etapa reutiliza tabelas já carregadas e não cria pedidos, entregas, consumos, uploads ou rascunhos durante validação.
+- [ ] **Entrega da Etapa H** — Rodar validações finais, commitar em `main`, enviar ao GitHub e confirmar o workflow do GitHub Pages.
