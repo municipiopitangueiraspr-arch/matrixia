@@ -18,3 +18,24 @@
 
 - [ ] Upload assistido com arquivo original preservado, extração em rascunho, revisão humana, validação e publicação confirmada.
 - [ ] Saldos, órgãos, pedidos, reservas, entregas e histórico operacional com mutações exclusivamente por RPCs existentes.
+
+## Gestão de Atas — Etapa A: consulta e detalhe
+
+- [x] **Hall de atas conectado ao Supabase** — Usuário autenticado consulta apenas atas autorizadas pela RLS, com busca textual e filtros por situação, vigência, fornecedor, órgão e processo; a tela informa carregamento, erro e estado vazio sem dados simulados.
+- [x] **Detalhe operacional da ata** — O detalhe exibe cabeçalho, fornecedor, vigência, valor, modalidade, situação, itens e saldos, órgãos consumidores, pedidos relacionados e histórico; quando não há `processo_compras_id`, mostra pendência explícita de vínculo com Licitações.
+- [x] **Acesso pelo núcleo Administração e Finanças** — A área compartilhada do MatrixIA abre o módulo de atas e permite retornar ao painel.
+- [x] **Validação da publicação** — `pnpm check`, `pnpm test` e `pnpm build:static` passaram; a alteração foi commitada em `main` e publicada pelo workflow do GitHub Pages.
+
+## Gestão de Atas — Etapa B: operação transacional
+
+- [x] **Saldos e consumos** — Itens exibem saldo atual; consumos autorizados são consultados e listados por ata; ajuste manual chama `gestao_atas_ajustar_saldo` com justificativa e depende do perfil/RLS.
+- [x] **Pedidos e itens** — Criação de rascunho, inclusão inicial de item e visualização de pedidos usam RPCs existentes, sem atualização direta de status pelo cliente.
+- [x] **Fluxo de aprovação** — Envio, aprovação, rejeição e cancelamento são expostos conforme o estado do pedido e delegados às RPCs do Supabase.
+- [x] **Reservas e entregas** — Reservas são exibidas; entregas parciais/finais são registradas pela RPC `compras_registrar_entrega`; encerramento chama `compras_encerrar_pedido`.
+- [x] **Histórico operacional** — Histórico da ata e dados de rastreabilidade dos pedidos permanecem visíveis sem criar dados durante a validação automática.
+- [x] **Validação técnica** — `pnpm check`, `pnpm test`, `pnpm build:static` e `git diff --check` aprovados.
+
+## Próxima etapa
+
+- [ ] Upload assistido com arquivo original preservado, extração em rascunho, revisão humana, validação e publicação confirmada.
+- [ ] Melhorar edição de múltiplos itens e devolução para ajuste com formulário contextual, mantendo as RPCs existentes.

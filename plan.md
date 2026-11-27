@@ -53,3 +53,15 @@ A primeira entrega de Gestão de Atas será somente de consulta e detalhe operac
 A interface seguirá a linguagem visual existente do MatrixIA: cabeçalho operacional, cartões de métricas, filtros, tabela principal e painel de detalhe contextual. O módulo será acessível pelo núcleo compartilhado Administração e Finanças e exibirá a pendência de vínculo com Licitações quando `processo_compras_id` não estiver preenchido. Upload, cadastro, alteração de saldo e pedidos transacionais ficam para as etapas seguintes; a Etapa A não cria registros nem arquivos.
 
 Arquivos principais da Etapa A: `client/src/components/ProcurementMinutesModule.tsx`, `client/src/components/ProcurementMinutesModule.css`, `client/src/lib/atas.ts`, `client/src/pages/Home.tsx` e, se necessário, `client/src/App.tsx`/`public/manus-routes.json`. A entrega deve passar em `pnpm check`, `pnpm test` e `pnpm build:static`, ser commitada em `main` e publicada pelo workflow do GitHub Pages.
+
+## Etapa A — Gestão de Atas no MatrixIA
+
+A primeira entrega de Gestão de Atas foi somente de consulta e detalhe operacional, sem migrations e sem mutações no banco. O frontend React usa o Supabase autenticado para consultar `atas`, `itens_ata`, `fornecedores`, `orgaos`, `atas_orgaos_consumidores`, `pedidos`, `itens_pedido`, `consumos`, `pedidos_reservas`, `pedidos_entregas`, `pedidos_entregas_itens`, `pedidos_eventos`, `atas_historico` e `auditoria_eventos`, sempre com filtros client-side sobre os registros protegidos pela RLS.
+
+A interface segue a linguagem visual existente do MatrixIA: cabeçalho operacional, cartões de métricas, filtros, lista principal e painel de detalhe contextual. O módulo é acessível pelo núcleo compartilhado Administração e Finanças e exibe a pendência de vínculo com Licitações quando `processo_compras_id` não está preenchido. A Etapa A foi validada e publicada no GitHub Pages.
+
+## Etapa B — Operação de saldos e pedidos
+
+A Etapa B foi implementada no mesmo workspace de Gestão de Atas, sem migration e sem banco paralelo. O cliente carrega unidades organizacionais, pedidos, itens, reservas, entregas, eventos e consumos com `select` explícito, limites e a RLS do Supabase como fonte de autorização. As mutações usam exclusivamente as RPCs existentes: criação de rascunho, substituição de itens, envio, aprovação, rejeição, cancelamento, entrega, encerramento e ajuste administrativo de saldo.
+
+A interface permite criar um pedido em rascunho a partir da ata selecionada, incluir o primeiro item com quantidade, enviar para aprovação e executar as ações compatíveis com o status. Também exibe reservas, entregas, consumos e trilhas de histórico. A validação automática não cria pedidos ou consumos reais; as ações só ocorrem quando um usuário autorizado as aciona na tela. Upload assistido, revisão humana e cadastro/importação continuam como próxima etapa.
