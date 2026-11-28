@@ -338,3 +338,23 @@
   .proc-actions > .proc-button,
   .proc-actions > .proc-primary { min-width: 0; }
 }
+
+
+/* Cabeçalho compartilhado MatrixIA: o módulo altera apenas o contexto exibido. */
+.proc-operations-shell { padding-top: 76px; }
+.proc-shared-header { gap: 18px; }
+.proc-shared-header-brand { display: flex; align-items: center; gap: 22px; min-width: 0; }
+.proc-shared-header .header-brand { flex: 0 0 auto; }
+.proc-shared-context { display: grid; gap: 3px; min-width: 0; padding-left: 22px; border-left: 1px solid #e2ebf1; }
+.proc-shared-context span { overflow: hidden; color: #607b8d; font-size: 9px; font-weight: 700; letter-spacing: .12em; text-overflow: ellipsis; text-transform: uppercase; white-space: nowrap; }
+.proc-shared-context strong { overflow: hidden; color: #173a53; font-family: Manrope, sans-serif; font-size: 14px; letter-spacing: -.035em; text-overflow: ellipsis; white-space: nowrap; }
+.proc-shared-header > .header-back-button { margin-left: 4px; }
+.proc-shared-header .user-menu { margin-left: auto; }
+@media (max-width: 760px) {
+  .proc-operations-shell { padding-top: 68px; }
+  .proc-shared-header { gap: 10px; }
+  .proc-shared-header-brand { gap: 12px; }
+  .proc-shared-context { display: none; }
+  .proc-shared-header > .header-back-button { margin-left: auto; }
+  .proc-shared-header .user-menu { margin-left: 0; }
+}
